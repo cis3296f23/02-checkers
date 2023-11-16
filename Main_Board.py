@@ -2,7 +2,7 @@ import pygame
 from constants import BLACK, WHITE
 
 ROWS = 8
-SQUARE_SIZE = 50
+SQUARE_SIZE = 87
 
 class MAIN_Board:
     def __init__(self, color1, color2, board_color):
