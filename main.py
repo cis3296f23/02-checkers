@@ -4,6 +4,8 @@
 
 import pygame
 import time
+from Main_Board import MAIN_Board
+from constants import BLACK, WHITE
 # import menu currently disabled
 
 pygame.init()
@@ -70,6 +72,9 @@ credits_rect2 = credits_text2.get_rect(center=(Width // 2, 670))
 # run until the user closes application
 def main():
     running = True
+    in_game = False  # Flag to check if the game is in progress
+    board = MAIN_Board("red", "black", "white")  # Create an instance of the game board
+
     while running:
         # did the user click the window close button?
         for event in pygame.event.get():
@@ -79,8 +84,8 @@ def main():
                 buttons = menu_buttons() # create array for buttons # NEED TO ADD PVC BUTTON OR MAKE PVP BUTTON COMBINED INTO BOTH
                 if buttons[2].collidepoint(event.pos): # if mouse is clicked on tutorial button
                     tutorial()
-                # elif buttons[0].collidepoint(event.pos): # if mouse is clicked on PvP button
-                    # code to start PvP game
+                elif buttons[0].collidepoint(event.pos):  # if mouse is clicked on PvP button
+                    in_game = True
                 elif buttons[1].collidepoint(event.pos): # if mouse is clicked on settings button
                     settings()
                 # elif buttons[3].collidepoint(event.pos): # if mouse is clicked on leaderboard button (not yet implemented)
@@ -88,21 +93,29 @@ def main():
                 # Check if the current song has finished, loop to next song
             elif event.type == SONG_END:
                 music_loop()
+                
+        if in_game:
+            # Draw the board
+            board.draw_squares(screen)
 
-        #image of the background
-        screen.blit(background_image, (0, 0))
 
-        # display title information and credits
-        screen.blit(title_text, title_rect)
-        screen.blit(message_text, message_rect)
-        screen.blit(credits_text1, credits_rect1)
-        screen.blit(credits_text2, credits_rect2)
-        
-        # call PvP button function from menu.py
-        menu_buttons()
+            pygame.display.update()  # Update the display
+        else:
 
-        # flip the display
-        pygame.display.flip()
+            #image of the background
+            screen.blit(background_image, (0, 0))
+
+            # display title information and credits
+            screen.blit(title_text, title_rect)
+            screen.blit(message_text, message_rect)
+            screen.blit(credits_text1, credits_rect1)
+            screen.blit(credits_text2, credits_rect2)
+            
+            # call PvP button function from menu.py
+            menu_buttons()
+
+            # flip the display
+            pygame.display.flip()
 
     # done! time to quit
     pygame.quit()
