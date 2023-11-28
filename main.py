@@ -6,6 +6,7 @@ import pygame
 from SecondMenu import SecondMenu
 from Main_Board import MAIN_Board
 from constants import BLACK, WHITE
+from game_clock import Timer
 import time
 import string
 
@@ -35,6 +36,7 @@ music_loop()
 pygame.mixer.music.set_endevent(SONG_END) # create event for song ending/looping
 music_playing = True # boolean to check if music is playing or not
 
+
 # for board customization, use class when creating game
 class Board:
     def __init__(self, color1, color2, boardColor):
@@ -43,6 +45,7 @@ class Board:
         self.boardColor = boardColor
 
 board = Board("red", "black", "white")
+
 
 # title for display (can remove credits if we do not want them)
 game_title = "Checkers+"
@@ -125,6 +128,16 @@ def get_player_name():
 
     return player_name
 
+# In game timer
+clock = pygame.time.Clock()
+shared_timer =Timer(15)     #15 seconds per timer
+
+# Function to display player timer
+def display_timer():
+    timer_font = pygame.font.Font(None, 36)
+    timer_text = timer_font.render(f"Timer: {shared_timer.get_time_string()}", True, BLACK)
+    screen.blit(timer_text, (300, 300))
+
 
 
 # run until the user closes application
@@ -159,6 +172,9 @@ def main():
                 # Check if the current song has finished, loop to next song
             elif event.type == SONG_END:
                 music_loop()
+                
+        # Update timer 
+        shared_timer.update()
 
         #image of the background
         screen.blit(background_image, (0, 0))
@@ -176,6 +192,9 @@ def main():
         # Display player name in the right bottom corner
         pygame.draw.rect(screen, (0, 0, 255), player_name_rect)  # Blue box
         screen.blit(player_name_text, player_name_rect)
+        
+        # Display timer
+        display_timer()
 
 
         # flip the display
@@ -183,6 +202,8 @@ def main():
 
     # done! time to quit
     pygame.quit()
+    
+    
 
 def menu_buttons(): # function to create menu buttons
 
@@ -221,6 +242,7 @@ def menu_buttons(): # function to create menu buttons
 
     screen.blit(button_text, button_text_rect)
     screen.blit(startgame_icon_resized, startgame_icon_rect.topleft)  # Draw the icon after drawing the button
+    
 
     # Settings Button    
     settings_icon = pygame.image.load('pics/settings_icon.png')
@@ -230,10 +252,12 @@ def menu_buttons(): # function to create menu buttons
 
     button_text = button_font.render("Settings", True, (255, 255, 255))  # Button text and color
     button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + button_height + spacing + button_height // 2))
+    
 
     # Draw the icon next to the text with the specified size
     settings_icon_resized = pygame.transform.scale(settings_icon, icon_size)
     settings_icon_rect = settings_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + button_height + spacing + (button_height - icon_size[1]) // 2))
+
 
     # Create button on screen using position and size parameters
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
@@ -251,6 +275,7 @@ def menu_buttons(): # function to create menu buttons
     screen.blit(settings_icon_resized, settings_icon_rect.topleft)  # Draw the icon after drawing the button
     screen.blit(button_text, button_text_rect)
 
+
     # Tutorial button
     tutorial_icon = pygame.image.load('pics/tutorial_icon.png')
 
@@ -265,12 +290,14 @@ def menu_buttons(): # function to create menu buttons
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
 
+
     # Draw the icon next to the text with the specified size
     tutorial_icon_resized = pygame.transform.scale(tutorial_icon, icon_size)
     tutorial_icon_rect = tutorial_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + 135 + (button_height - icon_size[1]) // 2))
 
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
+
     
     # Used to indicate if cursor is hovering over button. If so, button will be darker
     mouse = pygame.mouse.get_pos()
@@ -282,6 +309,7 @@ def menu_buttons(): # function to create menu buttons
 
     screen.blit(tutorial_icon_resized, tutorial_icon_rect.topleft)  # Draw the icon after drawing the button
     screen.blit(button_text, button_text_rect)
+
     
     # Leaderboard button
     leaderboard_icon = pygame.image.load('pics/leaderboard_icon.png')
@@ -297,6 +325,7 @@ def menu_buttons(): # function to create menu buttons
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
 
+
     # Draw the icon next to the text with the specified size
     leaderboard_icon_resized = pygame.transform.scale(leaderboard_icon, icon_size)
     leaderboard_icon_rect = leaderboard_icon_resized.get_rect(
@@ -304,6 +333,7 @@ def menu_buttons(): # function to create menu buttons
 
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
+
     
     # Used to indicate if cursor is hovering over button. If so, button will be darker
     mouse = pygame.mouse.get_pos()
@@ -320,11 +350,14 @@ def menu_buttons(): # function to create menu buttons
 
     return button_rect, button_rect_2, button_rect_3, button_rect_4
 
+
+
 def tutorial(): # tutorial prompt (subject to change text)
     # load image used in tutorial
     checkers_icon = pygame.image.load('pics/checkersguy_icon.png')
     tutorial_screen = pygame.display.set_mode([Width, Height])
     tutorial_screen.fill((128, 128, 128))
+
 
     # First message
     tutorial_font = pygame.font.Font(None, 64)
@@ -332,11 +365,13 @@ def tutorial(): # tutorial prompt (subject to change text)
     tutorial_rect = tutorial_text.get_rect(center=(Width // 2, 50))
     tutorial_screen.blit(tutorial_text, tutorial_rect)
 
+
     # Second message
     tutorial_font = pygame.font.Font(None, 32)
     tutorial_text = tutorial_font.render("This tutorial should provide you with instructions on how to play and use Checkers+.", True, (255, 255, 255))
     tutorial_rect = tutorial_text.get_rect(center=(Width // 2, 105))
     tutorial_screen.blit(tutorial_text, tutorial_rect)
+
 
     # First paragraph
     tutorial_font = pygame.font.Font(None, 25)
@@ -353,6 +388,7 @@ def tutorial(): # tutorial prompt (subject to change text)
     tutorial_rect = tutorial_text.get_rect(center=(Width // 2, 220))
     tutorial_screen.blit(tutorial_text, tutorial_rect)
 
+
     # Create icon
     icon_size = (100, 100)
     button_height = 50
@@ -360,6 +396,7 @@ def tutorial(): # tutorial prompt (subject to change text)
     checkers_icon_resized = pygame.transform.scale(checkers_icon, icon_size)
     checkers_icon_rect = checkers_icon_resized.get_rect(topleft=(Width // 2 - 150 + 95, Height // 3 + 30 + (button_height - icon_size[1]) // 2))
     screen.blit(checkers_icon_resized, checkers_icon_rect.topleft) 
+
 
     # Second paragraph
     tutorial_text = tutorial_font.render("To play Checkers+, standard checkers rules are applied...with a twist!", True, (255, 255, 255))
@@ -407,6 +444,8 @@ def tutorial(): # tutorial prompt (subject to change text)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if exit_button_rect.collidepoint(event.pos):  # if exit tutorial button is clicked
                     return  # exit tutorial and return to menu
+                
+                
                 
 def settings(): # settings menu
 
@@ -487,6 +526,8 @@ def settings(): # settings menu
                     else:
                         music_loop()  # Start the music from next song in tracklist
                         music_playing = True
+                        
+
 
 def show_leaderboard():
     pygame.init()
