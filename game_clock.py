@@ -9,14 +9,13 @@ class Timer:
 
     def update(self):
         current_time = pygame.time.get_ticks()
-        elapsed_time = (current_time - self.start_time) // 1000
-        self.time -= elapsed_time
+        elapsed_time = current_time - self.start_time
+        seconds_elapsed = elapsed_time // 1000  # Convert milliseconds to seconds
+        self.time -= seconds_elapsed
         self.start_time = current_time
 
-    def get_time_string(self):
-        minutes = self.time // 60
-        seconds = self.time % 60
-        return f"{minutes:02d}:{seconds:02d}"
+    def get_time(self):
+        return self.time
 
     def is_time_up(self):
         return self.time <= 0
