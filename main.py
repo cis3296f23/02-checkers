@@ -128,15 +128,6 @@ def get_player_name():
 
     return player_name
 
-# In game timer
-clock = pygame.time.Clock()
-shared_timer =Timer(15)     #15 seconds per timer
-
-# Function to display player timer
-def display_timer():
-    timer_font = pygame.font.Font(None, 36)
-    timer_text = timer_font.render(f"{shared_timer.get_time_string()}", True, BLACK)
-    screen.blit(timer_text, (775, 50))
 
 
 # run until the user closes application
@@ -154,8 +145,6 @@ def main():
 
     running = True
     while running:  
-        # Update timer
-        shared_timer.update()   
         
         # did the user click the window close button?
         for event in pygame.event.get():
@@ -192,8 +181,6 @@ def main():
         pygame.draw.rect(screen, (0, 0, 255), player_name_rect)  # Blue box
         screen.blit(player_name_text, player_name_rect)
         
-        display_timer() 
-
         # flip the display
         pygame.display.flip()    
         

@@ -1,14 +1,32 @@
 import pygame
+import time
 from Main_Board import MAIN_Board
-from constants import BLACK, WHITE
+from constants import BLACK, WHITE,RED
+from game_clock import Timer
+
 
 Width, Height = 1000, 700
+start_game_screen = pygame.display.set_mode([Width, Height])
 
+#game timer elements 
+clock = pygame.time.Clock()
+shared_timer =Timer(15)     #15 seconds per turn
+
+
+# Variable to store the start time of the game
+start_time = 0
+
+# Function to display player timer
+def display_timer():
+    timer_font = pygame.font.Font(None, 42)
+    timer_text = timer_font.render(f"{shared_timer.get_time_string()}", True, RED)
+    start_game_screen.blit(timer_text, (950, 15))
+
+    
 class SecondMenu:
     def start_game_menu(self):
         pygame.init()
-
-        start_game_screen = pygame.display.set_mode([Width, Height])
+        start_game_screen
         pygame.display.set_caption("Start Game Menu")
 
         message = "Select Game Mode"
@@ -98,6 +116,10 @@ class SecondMenu:
     
 
     def start_game_vs_player(self, screen):
+         # Set the start time when the game starts
+        global start_time
+        start_time = time.time()
+
         main_board = MAIN_Board(WHITE, BLACK, (0, 0, 0))
         running = True
         while running:
@@ -105,14 +127,24 @@ class SecondMenu:
                 if event.type == pygame.QUIT:
                     running = False
 
+            # Calculate elapsed time since the game started
+            elapsed_time = int(time.time() - start_time)
+
             screen.fill((0, 0, 0))  # Fill the screen with a background color (black in this case)
 
             # Draw the game board
             main_board.draw_squares(screen)
 
+            # Display the timer
+            display_timer()
+
             pygame.display.flip()
 
+            # Update the clock
+            clock.tick(60)
+
         pygame.quit()
+        
 
     def start_game_vs_computer(self, screen):
         main_board = MAIN_Board(WHITE, BLACK, (0, 0, 0))
