@@ -135,9 +135,8 @@ shared_timer =Timer(15)     #15 seconds per timer
 # Function to display player timer
 def display_timer():
     timer_font = pygame.font.Font(None, 36)
-    timer_text = timer_font.render(f"Timer: {shared_timer.get_time_string()}", True, BLACK)
-    screen.blit(timer_text, (300, 300))
-
+    timer_text = timer_font.render(f"{shared_timer.get_time_string()}", True, BLACK)
+    screen.blit(timer_text, (775, 50))
 
 
 # run until the user closes application
@@ -154,7 +153,10 @@ def main():
     player_name_rect = player_name_text.get_rect(bottomright=(Width - 10, Height - 10))  # Adjust position as needed
 
     running = True
-    while running:
+    while running:  
+        # Update timer
+        shared_timer.update()   
+        
         # did the user click the window close button?
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -173,9 +175,7 @@ def main():
             elif event.type == SONG_END:
                 music_loop()
                 
-        # Update timer 
-        shared_timer.update()
-
+                
         #image of the background
         screen.blit(background_image, (0, 0))
 
@@ -193,8 +193,7 @@ def main():
         pygame.draw.rect(screen, (0, 0, 255), player_name_rect)  # Blue box
         screen.blit(player_name_text, player_name_rect)
         
-        # Display timer
-        display_timer()
+        display_timer() 
 
 
         # flip the display
