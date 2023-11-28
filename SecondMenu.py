@@ -147,6 +147,11 @@ class SecondMenu:
         
 
     def start_game_vs_computer(self, screen):
+        
+         # Set the start time when the game starts
+        global start_time
+        start_time = time.time()
+
         main_board = MAIN_Board(WHITE, BLACK, (0, 0, 0))
         running = True
         while running:
@@ -154,11 +159,20 @@ class SecondMenu:
                 if event.type == pygame.QUIT:
                     running = False
 
+            # Calculate elapsed time since the game started
+            elapsed_time = int(time.time() - start_time)
+
             screen.fill((0, 0, 0))  # Fill the screen with a background color (black in this case)
 
             # Draw the game board
             main_board.draw_squares(screen)
 
+            # Display the timer
+            display_timer()
+
             pygame.display.flip()
+
+            # Update the clock
+            clock.tick(60)
 
         pygame.quit()
