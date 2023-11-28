@@ -1,5 +1,5 @@
 # Checkers+ 
-Checkers+ is an exciting Python-based game that offers a modern twist on the classic game of checkers. Upon launching the game, users are presented with a prompt to choose between two game modes: Player vs. Player (PvP) or Player vs. AI. The game adheres to standard checkers rules with a few intriguing alterations. Checkers+ is a game for people of all ages and skill levels, and we hope you enjoy! 
+Checkers+ is an exciting Python-based game that offers a modern twist on the classic game of checkers. Upon launching the game, users are presented with a prompt to choose between two game modes: Player vs. Player (PvP) or Player vs. AI. The game adheres to standard checkers rules with a few intriguing alterations. Checkers+ is a game for people of all ages and skill levels, and we hope you enjoy! This project builds off an already existing version of checkers that can be found here: https://github.com/techwithtim/Python-Checkers
 
 # Build Overview
 - Use this github repository: https://github.com/cis3296f23/Project-02-checkers.git
@@ -8,7 +8,7 @@ Checkers+ is an exciting Python-based game that offers a modern twist on the cla
 - May use any IDE to assist in Python development
 - Pygame will be used for this project. For Pygame installation instructions, please refer to this link: https://www.pygame.org/wiki/GettingStarted
 
-# Build and Installation Guide
+# Build and Installation Guide (Windows)
 - Download the latest release from this repository. For Windows users, inside the release should be a folder containing the Checkers+ application. After extracting the folder,
 simply run the application from inside the folder.
 - If you would like to download the repository and build the application using Python tools yourself (for users who are interested in contributing or changing code):
@@ -20,6 +20,9 @@ simply run the application from inside the folder.
 - Once PyInstaller is finished, your folder containing the files should now have a new folder inside titled "dist". Inside this folder is the Checkers+ application under the title "main".
 - If you try running the application, you will notice there are errors that prevent you from doing so. To fix this, copy and paste the application outside of the "dist" folder, where all the files from the current release are held.
 - Running the application should now work!
+
+# Build and Installation Guide (Mac)
+- We currently do not have instructions for Mac users. We hope to have this in future releases.
 
 # Brainstorming Board
 - This board contains the initial features list as a path we would expect an intermediate player to take using Checkers+.
