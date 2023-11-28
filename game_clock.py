@@ -14,8 +14,9 @@ class Timer:
         self.time -= seconds_elapsed
         self.start_time = current_time
 
-    def get_time(self):
-        return self.time
+    def get_time_string(self):
+        return str(self.time)  # Convert the integer to a string
+
 
     def is_time_up(self):
         return self.time <= 0

@@ -188,17 +188,15 @@ def main():
         # call PvP button function from menu.py
         menu_buttons()
 
-
         # Display player name in the right bottom corner
         pygame.draw.rect(screen, (0, 0, 255), player_name_rect)  # Blue box
         screen.blit(player_name_text, player_name_rect)
         
         display_timer() 
 
-
         # flip the display
-        pygame.display.flip()
-
+        pygame.display.flip()    
+        
     # done! time to quit
     pygame.quit()
     
