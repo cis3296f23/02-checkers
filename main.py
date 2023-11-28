@@ -10,8 +10,6 @@ import time
 import string
 
 
-# import menu currently disabled
-
 pygame.init()
 pygame.mixer.init() # initialize pygame mixer for music
 
