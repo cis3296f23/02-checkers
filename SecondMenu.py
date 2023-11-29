@@ -10,19 +10,11 @@ start_game_screen = pygame.display.set_mode([Width, Height])
 
 #game timer elements 
 clock = pygame.time.Clock()
-shared_timer =Timer(15)     #15 seconds per turn
 
 
 # Variable to store the start time of the game
 start_time = 0
-
-# Function to display player timer
-def display_timer():
-    timer_font = pygame.font.Font(None, 42)
-    timer_text = timer_font.render(f"{shared_timer.get_time_string()}", True, RED)
-    start_game_screen.blit(timer_text, (950, 15))
-
-    
+  
 class SecondMenu:
     def start_game_menu(self):
         pygame.init()
@@ -116,7 +108,9 @@ class SecondMenu:
     
 
     def start_game_vs_player(self, screen):
-         # Set the start time when the game starts
+        
+        # Set the start time when the game starts
+        shared_timer =Timer(15)     #15 seconds per turn
         global start_time
         start_time = time.time()
 
@@ -127,6 +121,9 @@ class SecondMenu:
                 if event.type == pygame.QUIT:
                     running = False
 
+            # Update the timer
+            shared_timer.update()
+
             # Calculate elapsed time since the game started
             elapsed_time = int(time.time() - start_time)
 
@@ -134,10 +131,13 @@ class SecondMenu:
 
             # Draw the game board
             main_board.draw_squares(screen)
+            print(f"Elapsed Time: {elapsed_time} seconds")
 
             # Display the timer
-            display_timer()
-
+            timer_font = pygame.font.Font(None, 42)
+            timer_text = timer_font.render(f"{shared_timer.get_time_string()}", True, RED)
+            start_game_screen.blit(timer_text, (950, 15))
+        
             pygame.display.flip()
 
             # Update the clock
@@ -145,10 +145,10 @@ class SecondMenu:
 
         pygame.quit()
         
-
     def start_game_vs_computer(self, screen):
         
-         # Set the start time when the game starts
+        # Set the start time when the game starts
+        shared_timer =Timer(15)     #15 seconds per turn
         global start_time
         start_time = time.time()
 
@@ -159,6 +159,9 @@ class SecondMenu:
                 if event.type == pygame.QUIT:
                     running = False
 
+            # Update the timer
+            shared_timer.update()
+
             # Calculate elapsed time since the game started
             elapsed_time = int(time.time() - start_time)
 
@@ -166,10 +169,13 @@ class SecondMenu:
 
             # Draw the game board
             main_board.draw_squares(screen)
+            print(f"Elapsed Time: {elapsed_time} seconds")
 
             # Display the timer
-            display_timer()
-
+            timer_font = pygame.font.Font(None, 42)
+            timer_text = timer_font.render(f"{shared_timer.get_time_string()}", True, RED)
+            start_game_screen.blit(timer_text, (950, 15))
+        
             pygame.display.flip()
 
             # Update the clock
