@@ -131,7 +131,8 @@ class SecondMenu:
 
             # Draw the game board
             main_board.draw_squares(screen)
-            print(f"Elapsed Time: {elapsed_time} seconds")
+            #print(f"Elapsed Time: {elapsed_time} seconds")
+            print(f"Frame Rate: {clock.get_fps()} FPS")
 
             # Display the timer
             timer_font = pygame.font.Font(None, 42)
@@ -179,6 +180,6 @@ class SecondMenu:
             pygame.display.flip()
 
             # Update the clock
-            clock.tick(60)
+            clock.tick(80)
 
         pygame.quit()
