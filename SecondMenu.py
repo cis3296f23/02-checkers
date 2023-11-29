@@ -3,6 +3,7 @@ from Main_Board import MAIN_Board
 from constants import RED, GREY
 from pieces import Piece
 
+
 Width, Height = 1000, 700 
 
 class SecondMenu:

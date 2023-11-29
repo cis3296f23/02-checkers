@@ -5,6 +5,8 @@ from constants import BLACK, WHITE
 from pieces import Piece
 import time
 import string
+import GameLogic
+import Computer_Algorithim
 
 # import menu currently disabled
 pygame.init()
@@ -410,6 +412,7 @@ def tutorial(): # tutorial prompt (subject to change text)
     pygame.display.flip()
 
     while True:
+        mouse = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
