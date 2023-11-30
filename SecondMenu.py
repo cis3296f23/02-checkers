@@ -170,6 +170,8 @@ class SecondMenu:
         while run:
             clock.tick(60)
             if game.turn == WHITE:
+                # prints computer thinking once 
+                print("TWOO_Computer is Thinking")
                 value, new_board = minimax(game.get_board(), 4, WHITE, game)
                 game.ai_move(new_board) 
 

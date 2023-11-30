@@ -36,7 +36,7 @@ class Main_Board: # board class that handles board logic
                 self.white_kings += 1
             else:
                 self.red_kings += 1 
-    #added a try catch if user clicks outside of board
+    
     def get_piece(self, row, col): # return piece at given position
         try:
             return self.board[row][col]

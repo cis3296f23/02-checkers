@@ -29,7 +29,7 @@ class Game: # game class to handle game logic, color represents board color chos
             if not result:
                 self.selected = None
                 self.select(row, col)
-        try:# this try catch must be here when user click outside board
+        try:
             piece = self.board.get_piece(row, col)
             if piece != 0 and piece.color == self.turn:
                 self.selected = piece

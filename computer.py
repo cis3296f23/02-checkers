@@ -9,7 +9,8 @@ from constants import RED, WHITE
 def minimax(position, depth, max_player, game): # minimax algorithm for AI to play checkers
     if depth == 0 or position.winner() != None:
         return position.evaluate(), position
-    
+    #prints computer thinking until made a move
+    print("Computer is Thinking")
     if max_player:
         maxEval = float('-inf')
         best_move = None
