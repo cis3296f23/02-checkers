@@ -32,34 +32,33 @@ class Game: # game class to handle game logic, color represents board color chos
     def winner(self): # if winner has been found, return winner
         return self.board.winner()
 
-    def select(self, row, col): # select piece to move and as a result show available moves
+    def select(self, row, col):
         if self.selected:
             result = self.move(row, col)
             if not result:
                 self.selected = None
                 self.select(row, col)
-        
+
         piece = self.board.get_piece(row, col)
         if piece != 0 and piece.color == self.turn:
             self.selected = piece
             self.valid_moves = self.board.get_valid_moves(piece)
-            self.turn_start_time = pygame.time.get_ticks()  # Reset the turn timer
             return True
-            
+
         return False
 
-    def move(self, row, col): # move piece to new position
+    def move(self, row, col):
         piece = self.board.get_piece(row, col)
         if self.selected and piece == 0 and (row, col) in self.valid_moves:
             self.board.move(self.selected, row, col)
-            skipped = self.valid_moves[(row, col)]
+            skipped = self.valid_moves.get((row, col))
             if skipped:
                 self.board.remove(skipped)
             self.change_turn()
-        else:
-            return False
+            self.turn_start_time = pygame.time.get_ticks()  # Reset the turn timer
+            return True
 
-        return True
+        return False
 
     def show_available_moves(self, moves): # show available moves for selected piece
         for move in moves:
