@@ -9,7 +9,7 @@ from Main_Board import Main_Board
 class Game: # game class to handle game logic, color represents board color chosen by user
     def __init__(self, win, color):
         self.turn_start_time = pygame.time.get_ticks()
-        self.turn_timeout = 15000  # 15 seconds per turn
+        self.turn_timeout = 5000  # 5 seconds per turn
         self.win = win
         self.color = color
         self.selected = None
