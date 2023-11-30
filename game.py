@@ -8,18 +8,27 @@ from Main_Board import Main_Board
 
 class Game: # game class to handle game logic, color represents board color chosen by user
     def __init__(self, win, color):
+        self.turn_start_time = pygame.time.get_ticks()
+        self.turn_timeout = 15000  # 15 seconds per turn
         self.win = win
         self.color = color
         self.selected = None
         self.board = Main_Board(self.color)
         self.turn = RED
         self.valid_moves = {}
-    
+        
+    def check_turn_timeout(self):
+        elapsed_time = pygame.time.get_ticks() - self.turn_start_time
+        print(f"Elapsed Time: {elapsed_time} ms")
+        if elapsed_time > self.turn_timeout:
+            self.change_turn()
+            
     def update(self): # update board to show current board
         self.board.draw(self.win)
         self.show_available_moves(self.valid_moves)
+        self.check_turn_timeout()
         pygame.display.update()
-
+        
     def winner(self): # if winner has been found, return winner
         return self.board.winner()
 
@@ -34,6 +43,7 @@ class Game: # game class to handle game logic, color represents board color chos
         if piece != 0 and piece.color == self.turn:
             self.selected = piece
             self.valid_moves = self.board.get_valid_moves(piece)
+            self.turn_start_time = pygame.time.get_ticks()  # Reset the turn timer
             return True
             
         return False
@@ -58,6 +68,7 @@ class Game: # game class to handle game logic, color represents board color chos
 
     def change_turn(self): # change turn to other player/color
         self.valid_moves = {}
+        self.turn_start_time = pygame.time.get_ticks()  # Reset the turn timer
         if self.turn == RED:
             self.turn = WHITE
         else:
