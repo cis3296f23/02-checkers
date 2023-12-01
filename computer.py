@@ -15,7 +15,7 @@ def minimax(position, depth, max_player, game): # minimax algorithm for AI to pl
         return position.evaluate(), position
         #prints computer thinking until made a move
         move_sound = pygame.mixer.Sound('music/sliding.mp3')
-        move_sound.set_volume(0.7)
+        move_sound.set_volume(0.4)
         if not pygame.mixer.get_busy():
             move_sound.play()
     
