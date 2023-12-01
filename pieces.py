@@ -4,9 +4,16 @@
 from constants import SQUARE_SIZE, GREY, KING
 import pygame
 
+pygame.init()
+pygame.mixer.init()
+
+
 class Piece:
     PADDING = 15
     OUTLINE = 3 # create outline around piece for better visuals
+
+
+
 
     def __init__(self, row, col, color): # initialize piece
         self.row = row
@@ -32,6 +39,13 @@ class Piece:
             win.blit(KING, (self.x - KING.get_width()//2, self.y - KING.get_height()//2))
 
     def move(self, row, col): # move piece to new position
+        move_sound = pygame.mixer.Sound('music/sliding.mp3')
+        move_sound.set_volume(0.7)
+
         self.row = row
         self.col = col
         self.calc_pos()
+        if not pygame.mixer.get_busy():
+            move_sound.play()
+
+        #move_sound.play()
