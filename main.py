@@ -18,12 +18,22 @@ pygame.display.set_caption("Checkers+")
 tracks = ["music/Track1.mp3", "music/Track2.mp3", "music/Track3.mp3", "music/Track4.mp3"] # can add more or delete tracks if we do not like them
 current_track = 0
 SONG_END = pygame.USEREVENT + 1
+
+pygame.mixer.music.load(tracks[current_track])
+pygame.mixer.music.set_volume(0.1) # 0.1-1.0, can change accordingly
+
 def music_loop():
     global current_track
     pygame.mixer.music.load(tracks[current_track])
-    pygame.mixer.music.set_volume(0.1) # 0.1-1.0, can change accordingly
     pygame.mixer.music.play()
-    current_track = (current_track + 1) % len(tracks)
+    current_track = (current_track + 1) % len(tracks) # loop to next song
+
+# Function to draw the volume slider
+def draw_volume_slider(volume):
+    slider_width = 5 #20
+    slider_height = 10 #10
+    pygame.draw.rect(screen, (255, 255, 255), (0, Height - slider_height, Width, slider_height))  # Draw slider bar
+    pygame.draw.rect(screen, (0, 0, 255), (0, Height - slider_height, int(Width * volume), slider_height))  # Draw slider button
 
 music_loop()
 pygame.mixer.music.set_endevent(SONG_END) # create event for song ending/looping
@@ -64,6 +74,12 @@ def main():
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 buttons = menu_buttons() # create array for buttons # NEED TO ADD PVC BUTTON OR MAKE PVP BUTTON COMBINED INTO BOTH
+                if event.button == 1:  # Left mouse button
+                    mouseX, mouseY = pygame.mouse.get_pos()
+                    if 0 <= mouseX <= Width and Height - 10 <= mouseY <= Height:
+                        # Adjust volume based on slider position
+                        volume = mouseX / Width
+                        pygame.mixer.music.set_volume(volume)
                 if buttons[0].collidepoint(event.pos): # If Start Game button is clicked, show the second menu
                    second_menu_instance.start_game_menu()
                 if buttons[2].collidepoint(event.pos): # if mouse is clicked on tutorial button
@@ -86,6 +102,8 @@ def main():
         
         # call PvP button function from menu.py
         menu_buttons()
+        screen.fill((0, 0, 0))  # Fill the screen with black
+        draw_volume_slider(pygame.mixer.music.get_volume())  # Draw the volume slider
         pygame.display.flip()
 
     # done! time to quit
