@@ -434,6 +434,7 @@ def show_leaderboard():
     for i, (username, score) in enumerate(top_ten_players):
         leaderboard_text = leaderboard_font.render(f"{i + 1}. {username}: {score} points", True, (255, 255, 255))
         leaderboard_text_rect = leaderboard_text.get_rect(center=(200, leaderboard_y + i * 30))
+        leaderboard_text_rect.center = (500, leaderboard_y + i * 30)  # Adjust the horizontal position as needed
         leaderboard_screen.blit(leaderboard_text, leaderboard_text_rect)
         
     pygame.display.flip()

@@ -32,10 +32,10 @@ class ScoreManager:
         if player.username in self.user_scores:
             if player.win == 1:
                 self.user_scores[player.username] += 50
-            elif player.win == 0:
-                self.user_scores[player.username] -= 50
             elif player.win == 0 and player.score <= 0:
                 self.user_scores[player.username] = 0
+            elif player.win == 0:
+                self.user_scores[player.username] -= 50
             
             player.score = self.user_scores[player.username]
             self.save_scores()
