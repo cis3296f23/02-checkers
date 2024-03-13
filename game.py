@@ -81,6 +81,9 @@ class Game:
         text_surface2 = self.font.render(text2, True, self.text_color)
         self.screen.blit(text_surface, (715, 350))
         self.screen.blit(text_surface2, (715, 400))
+        
+    def display_twitter_feed():
+        pass #* LOGIC GOES HERE
 
     def update(self): 
         """
@@ -92,6 +95,8 @@ class Game:
         self.display_turn()
         self.display_piece_count()
         self.display_player_names(self.player1, self.player2)
+        self.display_twitter_feed()
+        
         pygame.display.update()
         
     def winner(self): 
