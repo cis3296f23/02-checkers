@@ -116,16 +116,16 @@ def menu_buttons():
     startgame_icon = pygame.image.load('pics/start_icon.png')
     # Draw the icon next to the text with the specified size
     startgame_icon_resized = pygame.transform.scale(startgame_icon, icon_size)
-    startgame_icon_rect = startgame_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + (button_height - icon_size[1] - 50) // 2))
+    startgame_icon_rect = startgame_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + (button_height - icon_size[1] - 50) // 2 - 75))
 
     color = (128, 128, 128) # grey
     cursor_color = (100, 100, 100) # darker grey
-    position = (Width // 2-150, Height // 3-25)
+    position = (Width // 2-150, Height // 3-25-75)
     size = (300, 50)  # width, height
         
     button_font = pygame.font.Font(None, 32)
     button_text = button_font.render("Start Game", True, (255, 255, 255)) # Button text and color
-    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3))
+    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3-75))
     
     # Create button on screen using position and size parameters
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
@@ -146,15 +146,15 @@ def menu_buttons():
     # Settings Button    
     settings_icon = pygame.image.load('pics/settings_icon.png')
 
-    position = (Width // 2 - 150, Height // 3 + button_height + spacing)
+    position = (Width // 2 - 150, Height // 3 + button_height + spacing - 75)
     size = (300, button_height)  # width, height
 
     button_text = button_font.render("Settings", True, (255, 255, 255))  # Button text and color
-    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + button_height + spacing + button_height // 2))
+    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + button_height + spacing + button_height // 2 - 75))
 
     # Draw the icon next to the text with the specified size
     settings_icon_resized = pygame.transform.scale(settings_icon, icon_size)
-    settings_icon_rect = settings_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + button_height + spacing + (button_height - icon_size[1]) // 2))
+    settings_icon_rect = settings_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + button_height + spacing + (button_height - icon_size[1]) // 2 - 75))
 
     # Create button on screen using position and size parameters
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
@@ -177,18 +177,18 @@ def menu_buttons():
 
     color = (128, 128, 128) # grey
     cursor_color = (100, 100, 100) # darker grey
-    position = (Width // 2-150, Height // 3 + 135)
+    position = (Width // 2-150, Height // 3 + 135 - 75)
     size = (300, 50)  # width, height
 
     button_font = pygame.font.Font(None, 32)
     button_text = button_font.render("Tutorial", True, (255, 255, 255)) # Button text and color
-    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3+160))
+    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3+160-75))
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
 
     # Draw the icon next to the text with the specified size
     tutorial_icon_resized = pygame.transform.scale(tutorial_icon, icon_size)
-    tutorial_icon_rect = tutorial_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + 135 + (button_height - icon_size[1]) // 2))
+    tutorial_icon_rect = tutorial_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + 135 + (button_height - icon_size[1]) // 2-75))
 
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
@@ -209,19 +209,19 @@ def menu_buttons():
 
     color = (128, 128, 128) # grey
     cursor_color = (100, 100, 100) # darker grey
-    position = (Width // 2 - 150, Height // 3 + 210)  # Adjust the vertical position as needed
+    position = (Width // 2 - 150, Height // 3 + 210-75)  # Adjust the vertical position as needed
     size = (300, 50)  # width, height
 
     button_font = pygame.font.Font(None, 32)
     button_text = button_font.render("View Rankings", True, (255, 255, 255)) # Button text and color
-    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + 235))  # Adjust the vertical position as needed
+    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + 235-75))  # Adjust the vertical position as needed
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
 
     # Draw the icon next to the text with the specified size
     leaderboard_icon_resized = pygame.transform.scale(leaderboard_icon, icon_size)
     leaderboard_icon_rect = leaderboard_icon_resized.get_rect(
-    topleft=(Width // 2 - 150 + 10, Height // 3 + 210 + (button_height - icon_size[1]) // 2))
+    topleft=(Width // 2 - 150 + 10, Height // 3 + 210 + (button_height - icon_size[1]) // 2-75))
 
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
@@ -244,18 +244,18 @@ def menu_buttons():
 
     color = (128, 128, 128) # grey
     cursor_color = (100, 100, 100) # darker grey
-    position = (Width // 2 - 150, Height // 3 + 285)  # Adjust the vertical position as needed
+    position = (Width // 2 - 150, Height // 3 + 285-75)  # Adjust the vertical position as needed
     size = (300, 50)  # width, height
 
     button_font = pygame.font.Font(None, 32)
     button_text = button_font.render("Customize Board", True, (255, 255, 255)) # Button text and color
-    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + 310))  # Adjust the vertical position as needed
+    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + 310-75))  # Adjust the vertical position as needed
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
 
     # Draw the icon next to the text with the specified size
     board_icon_resized = pygame.transform.scale(board_icon, icon_size)
-    board_icon_rect = board_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + 285 + (button_height - icon_size[1]) // 2))
+    board_icon_rect = board_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + 285 + (button_height - icon_size[1]) // 2-75))
 
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
@@ -270,8 +270,40 @@ def menu_buttons():
 
     screen.blit(board_icon_resized, board_icon_rect.topleft)  # Draw the icon after drawing the button
     screen.blit(button_text, button_text_rect)
+    
+    # Temple Twitter News Button
+    twitter_icon = pygame.image.load('pics/twitter_icon.png')
+    
+    color = (128, 128, 128) # grey
+    cursor_color = (100, 100, 100) # darker grey
+    position = (Width // 2 - 150, Height // 3 + 285)  # Adjust the vertical position as needed
+    size = (300, 50)  # width, height
+    
+    button_font = pygame.font.Font(None, 32)
+    button_text = button_font.render("Temple News", True, (255, 255, 255)) # Button text and color
+    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + 310))  # Adjust the vertical position as needed
+    pygame.draw.rect(screen, color, pygame.Rect(position, size))
+    screen.blit(button_text, button_text_rect)
 
-    return button_rect, button_rect_2, button_rect_3, button_rect_4, button_rect_5
+    # Draw the icon next to the text with the specified size
+    twitter_icon_resized = pygame.transform.scale(twitter_icon, icon_size)
+    twitter_icon_rect = twitter_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + 285 + (button_height - icon_size[1]) // 2))
+
+    pygame.draw.rect(screen, color, pygame.Rect(position, size))
+    screen.blit(button_text, button_text_rect)
+        
+    # Used to indicate if cursor is hovering over button. If so, button will be darker
+    mouse = pygame.mouse.get_pos()
+    button_rect_6 = pygame.Rect(position, size)
+    if button_rect_6.collidepoint(mouse):
+        pygame.draw.rect(screen, cursor_color, button_rect_6)  # Change color when cursor hovered over
+    else:
+        pygame.draw.rect(screen, color, button_rect_6) # stay original color if cursor not hovering over
+
+    screen.blit(twitter_icon_resized, twitter_icon_rect.topleft)  # Draw the icon after drawing the button
+    screen.blit(button_text, button_text_rect)
+    
+    return button_rect, button_rect_2, button_rect_3, button_rect_4, button_rect_5, button_rect_6
 
 def tutorial(): 
     """
