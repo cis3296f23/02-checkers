@@ -3,7 +3,7 @@ Main.py
 The main file holds menu operations for the game including sound, settings, leaderboard, tutorial, and board customization.
 
 """
-import pygame, tweepy
+import pygame
 from SecondMenu import SecondMenu
 from constants import BLUE, YELLOW, RED, GREEN
 from ScoreManager import ScoreManager

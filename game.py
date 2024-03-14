@@ -3,6 +3,7 @@ Game.py
 The game file holds the game logic and game class.
 """
 import pygame
+import snscrape.modules.twitter as snx
 from constants import RED, WHITE, YELLOW, SQUARE_SIZE
 from Main_Board import Main_Board
 
@@ -82,8 +83,16 @@ class Game:
         self.screen.blit(text_surface, (715, 350))
         self.screen.blit(text_surface2, (715, 400))
         
-    def display_twitter_feed():
-        pass #* LOGIC GOES HERE
+    def display_twitter_feed(self):
+        username = 'TempleAlert'
+        # for tweet in snx.TwitterProfileScraper(username).get_items():
+        #     most_recent_tweet = tweet
+        #     break
+        
+        # print(most_recent_tweet)
+        
+        text_surface = self.font.render(username, True, self.text_color)
+        self.screen.blit(text_surface, (715,500))
 
     def update(self): 
         """
