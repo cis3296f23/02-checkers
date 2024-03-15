@@ -82,6 +82,14 @@ class Game:
         self.screen.blit(text_surface, (715, 350))
         self.screen.blit(text_surface2, (715, 400))
 
+    def display_player_names(self,): 
+        """
+        The display player names function displays the player names on the screen.
+        """
+        text2 = f"look this is different"
+        text_surface2 = self.font.render(text2, True, self.text_color)
+        self.screen.blit(text_surface2, (715, 400))
+
     def update(self): 
         """
         The update function updates the board to show the current board and features.
@@ -92,6 +100,7 @@ class Game:
         self.display_turn()
         self.display_piece_count()
         self.display_player_names(self.player1, self.player2)
+        self.display_api()
         pygame.display.update()
         
     def winner(self): 
