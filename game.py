@@ -82,13 +82,13 @@ class Game:
         self.screen.blit(text_surface, (715, 350))
         self.screen.blit(text_surface2, (715, 400))
 
-    def display_player_names(self,): 
+    def display_api(self): 
         """
         The display player names function displays the player names on the screen.
         """
         text2 = f"look this is different"
         text_surface2 = self.font.render(text2, True, self.text_color)
-        self.screen.blit(text_surface2, (715, 400))
+        self.screen.blit(text_surface2, (715, 450))
 
     def update(self): 
         """
