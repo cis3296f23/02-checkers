@@ -43,6 +43,48 @@ class Game:
         self.screen = pygame.display.set_mode((1000, 700))
         self.player1 = player1
         self.player2 = player2
+
+    def render_text(self, text: str, coordinate, maxSize):
+        """
+        Renders text to a max width in pixel and wraps the text at that point
+        """
+        words_and_newlines = text.split()
+        lines = []
+        current_line = ''
+
+        for item in words_and_newlines:
+            if '\n' in item:
+                # Split the item by newline characters
+                sub_items = item.split('\n')
+                for sub_item in sub_items:
+                    # Check if sub_item is not empty after split
+                    if sub_item:
+                        # Check if adding sub_item to current_line exceeds maxSize
+                        if self.font.size(current_line + ' ' + sub_item)[0] <= maxSize:
+                            # Append sub_item to current_line
+                            current_line += ' ' + sub_item if current_line else sub_item
+                        else:
+                            # Append current_line to lines and start a new line with sub_item
+                            lines.append(current_line)
+                            current_line = sub_item
+            else:
+                # Check if adding item to current_line exceeds maxSize
+                if self.font.size(current_line + ' ' + item)[0] <= maxSize:
+                    # Append item to current_line
+                    current_line += ' ' + item if current_line else item
+                else:
+                    # Append current_line to lines and start a new line with item
+                    lines.append(current_line)
+                    current_line = item
+
+        if current_line:
+            lines.append(current_line)
+
+        y = coordinate[1]
+        for line in lines:
+            text_surface = self.font.render(line, True, self.text_color)
+            self.screen.blit(text_surface, (coordinate[0], y))
+            y += text_surface.get_height()
         
     def check_turn_timeout(self):
         """
@@ -96,16 +138,16 @@ class Game:
 
     def display_api(self): 
         """
-        The display player names function displays the player names on the screen.
+        Displays the reddit api on the screen
         """
         posts = self.subreddit.new(limit=10)
         new_post = next(posts)
         title = new_post.title
+        description = new_post.selftext
         url = new_post.url
-        text_surface = self.font.render(title, True, self.text_color)
-        text_surface2 = self.font.render(url, True, self.text_color)
-        self.screen.blit(text_surface, (715, 450))
-        self.screen.blit(text_surface2, (715, 475))
+        text_to_render = '\n'.join([title, description, url])
+        
+        self.render_text(text_to_render, (715, 450), 300)
 
     def update(self): 
         """
