@@ -3,6 +3,8 @@ Game.py
 The game file holds the game logic and game class.
 """
 import pygame
+import praw
+
 from constants import RED, WHITE, YELLOW, SQUARE_SIZE
 from Main_Board import Main_Board
 
@@ -12,6 +14,16 @@ class Game:
     display the piece count, display the player names, update the board, check for a winner, select a piece, move a piece, show available moves, change the turn,
     get the board, and move an AI piece.
     """
+
+    reddit = praw.Reddit(
+        client_id="yZTQkbDVPMu8hHrec0vl_g",
+        client_secret="qP1f9w1p0d2sKnLPH1lPxPwbHp_skQ",
+        user_agent="app for tu software design"
+    )
+
+    subreddit = reddit.subreddit("Temple")
+
+    
     def __init__(self, win, color, player1, player2):
         """
         The init function initializes the Game class with a window, color, player1, and player2, and sets the turn start time and turn timeout. The text color is set to white,
@@ -86,9 +98,14 @@ class Game:
         """
         The display player names function displays the player names on the screen.
         """
-        text2 = f"look this is different"
-        text_surface2 = self.font.render(text2, True, self.text_color)
-        self.screen.blit(text_surface2, (715, 450))
+        posts = self.subreddit.new(limit=10)
+        new_post = next(posts)
+        title = new_post.title
+        url = new_post.url
+        text_surface = self.font.render(title, True, self.text_color)
+        text_surface2 = self.font.render(url, True, self.text_color)
+        self.screen.blit(text_surface, (715, 450))
+        self.screen.blit(text_surface2, (715, 475))
 
     def update(self): 
         """
