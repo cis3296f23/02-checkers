@@ -2,8 +2,9 @@
 Game.py
 The game file holds the game logic and game class.
 """
-import pygame
-import snscrape.modules.twitter as snx
+
+from textwrap import wrap
+import pygame, redditwarp.SYNC
 from constants import RED, WHITE, YELLOW, SQUARE_SIZE
 from Main_Board import Main_Board
 
@@ -83,16 +84,22 @@ class Game:
         self.screen.blit(text_surface, (715, 350))
         self.screen.blit(text_surface2, (715, 400))
         
-    def display_twitter_feed(self):
-        username = 'TempleAlert'
-        # for tweet in snx.TwitterProfileScraper(username).get_items():
-        #     most_recent_tweet = tweet
-        #     break
+    def display_reddit_post(self):
         
-        # print(most_recent_tweet)
+        client = redditwarp.SYNC.Client()
+        top = next(client.p.subreddit.pull.top('checkers', amount=1, time='hour'))
+       
+        title = self.font.render("r/checkers: ",  True, self.text_color)
+        self.screen.blit(title, (715,475))
+       
+        post = top.title
         
-        text_surface = self.font.render(username, True, self.text_color)
-        self.screen.blit(text_surface, (715,500))
+        wrapped_post = wrap(post, 20)
+        num_lines = len(wrapped_post)
+        
+        for i in range(num_lines):
+            text_surface = self.font.render(wrapped_post[i], True, self.text_color)
+            self.screen.blit(text_surface, (715,500 + (i*25)))
 
     def update(self): 
         """
@@ -104,7 +111,7 @@ class Game:
         self.display_turn()
         self.display_piece_count()
         self.display_player_names(self.player1, self.player2)
-        self.display_twitter_feed()
+        self.display_reddit_post()
         
         pygame.display.update()
         
