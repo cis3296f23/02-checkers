@@ -23,7 +23,9 @@ class Game:
 
     subreddit = reddit.subreddit("Temple")
 
-    
+    posts = subreddit.new(limit=10)
+    current_post = next(posts)
+
     def __init__(self, win, color, player1, player2):
         """
         The init function initializes the Game class with a window, color, player1, and player2, and sets the turn start time and turn timeout. The text color is set to white,
@@ -38,53 +40,39 @@ class Game:
         self.turn = RED
         self.valid_moves = {}
         self.font = pygame.font.Font(None, 36)  # Font for rendering text
+        self.small_font = pygame.font.Font(None, 24)
         self.text_color = WHITE  # Text color
         self.text_urgent_color = RED  # Text color when time is running out
         self.screen = pygame.display.set_mode((1000, 700))
         self.player1 = player1
         self.player2 = player2
 
-    def render_text(self, text: str, coordinate, maxSize):
+    def render_text(self, text: str, coordinate, maxSize, font) -> int:
         """
         Renders text to a max width in pixel and wraps the text at that point
         """
-        words_and_newlines = text.split()
+        words = text.split(' ')
         lines = []
         current_line = ''
 
-        for item in words_and_newlines:
-            if '\n' in item:
-                # Split the item by newline characters
-                sub_items = item.split('\n')
-                for sub_item in sub_items:
-                    # Check if sub_item is not empty after split
-                    if sub_item:
-                        # Check if adding sub_item to current_line exceeds maxSize
-                        if self.font.size(current_line + ' ' + sub_item)[0] <= maxSize:
-                            # Append sub_item to current_line
-                            current_line += ' ' + sub_item if current_line else sub_item
-                        else:
-                            # Append current_line to lines and start a new line with sub_item
-                            lines.append(current_line)
-                            current_line = sub_item
+        for word in words:
+            test_line = current_line + ' ' + word if current_line else word
+            text_surface = self.font.render(test_line, True, self.text_color)
+            if text_surface.get_width() <= maxSize or '\n' in word:
+                current_line = test_line
             else:
-                # Check if adding item to current_line exceeds maxSize
-                if self.font.size(current_line + ' ' + item)[0] <= maxSize:
-                    # Append item to current_line
-                    current_line += ' ' + item if current_line else item
-                else:
-                    # Append current_line to lines and start a new line with item
-                    lines.append(current_line)
-                    current_line = item
+                lines.append(current_line)
+                current_line = word
 
         if current_line:
             lines.append(current_line)
 
         y = coordinate[1]
         for line in lines:
-            text_surface = self.font.render(line, True, self.text_color)
+            text_surface = font.render(line, True, self.text_color)
             self.screen.blit(text_surface, (coordinate[0], y))
             y += text_surface.get_height()
+        return y
         
     def check_turn_timeout(self):
         """
@@ -101,6 +89,10 @@ class Game:
         # Render text
         self.screen.blit(text_surface, (715, 50))
         if elapsed_time > self.turn_timeout:
+            try:
+                self.current_post = next(self.posts)
+            except StopIteration:
+                self.current_post = self.subreddit.new(limit=10)
             self.change_turn()
 
     def display_turn(self):
@@ -140,14 +132,12 @@ class Game:
         """
         Displays the reddit api on the screen
         """
-        posts = self.subreddit.new(limit=10)
-        new_post = next(posts)
-        title = new_post.title
-        description = new_post.selftext
-        url = new_post.url
-        text_to_render = '\n'.join([title, description, url])
-        
-        self.render_text(text_to_render, (715, 450), 300)
+        title = self.current_post.title
+        description = self.current_post.selftext
+        print(self.current_post.url + '\n')
+
+        title_end = self.render_text(title, (715, 450), 300, self.font)
+        self.render_text(description, (715, title_end+25),300, self.small_font)
 
     def update(self): 
         """
