@@ -495,7 +495,7 @@ def show_leaderboard():
             elif event.type == SONG_END:
                 music_loop()
 
-def board_customization(): 
+def board_customization():
     """
     The board customization function displays the board customization screen. It allows the user to change the color of the board to red, blue, yellow, or green. 
     It allows the user to exit the board customization after clicking the exit button.
@@ -527,7 +527,7 @@ def board_customization():
     # Draw the enlarged box behind the text
     pygame.draw.rect(board_customization_screen, (128, 128, 128), box_rect)
     board_customization_screen.blit(board_color_text, text_rect)
-        
+
     square_side = 50  # Size of the square
     red_square_rect = pygame.Rect(text_rect.right + 50, text_rect.centery - square_side // 2, square_side, square_side)
     pygame.draw.rect(board_customization_screen, RED, red_square_rect)  # Red square
@@ -540,6 +540,17 @@ def board_customization():
 
     pygame.display.flip()
 
+    color = (128, 128, 128)  # grey
+    position = (Width // 2 - 200, Height // 3 - 25)
+
+    notify_font = pygame.font.Font(None, 32)
+
+    def updateUser(color_type):
+        notify_text = notify_font.render("board color was updated to "+color_type, True, (0, 0, 0))  # Button text and color
+        notify_rect = notify_text.get_rect(center=(Width // 2, Height // 3))
+        pygame.draw.rect(screen, color, pygame.Rect(position, (400, 50)))
+        screen.blit(notify_text, notify_rect)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -550,13 +561,19 @@ def board_customization():
                     return
                 if red_square_rect.collidepoint(event.pos): # make board red
                     second_menu_instance.color = RED
+                    updateUser("red")
                 if blue_square_rect.collidepoint(event.pos): # make board blue
                     second_menu_instance.color = BLUE
+                    updateUser("blue")
                 if yellow_square_rect.collidepoint(event.pos): # make board yellow
                     second_menu_instance.color = YELLOW
+                    updateUser("yellow")
                 if green_square_rect.collidepoint(event.pos): # make board green
                     second_menu_instance.color = GREEN
+                    updateUser("green")
             elif event.type == SONG_END:
                 music_loop()
+
+        pygame.display.flip()
 
 main()
