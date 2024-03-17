@@ -251,6 +251,7 @@ class SecondMenu:
         screen.blit(exit_text, exit_button_rect)
         pygame.display.flip()
 
+        n=0
         while run:
             clock.tick(60)
             if game.turn == WHITE:
@@ -278,5 +279,5 @@ class SecondMenu:
                     
                 if event.type == background_music.SONG_END:
                         background_music.handle_event(event)
-
-            game.update()
+            game.update(n)
+            n += 1

@@ -101,7 +101,7 @@ class Game:
             text_surface = self.font.render(wrapped_post[i], True, self.text_color)
             self.screen.blit(text_surface, (715,500 + (i*25)))
 
-    def update(self): 
+    def update(self, n): 
         """
         The update function updates the board to show the current board and features.
         """
@@ -111,7 +111,8 @@ class Game:
         self.display_turn()
         self.display_piece_count()
         self.display_player_names(self.player1, self.player2)
-        self.display_reddit_post()
+        if n == 0:
+            self.display_reddit_post()
         
         pygame.display.update()
         
