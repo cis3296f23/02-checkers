@@ -1,3 +1,22 @@
+# Spring 2024 Updates
+
+To run, you must:
+
+1) Create a virtual environment (.venv)
+   - PowerShell: `python -m venv .venv`
+2) Activate your virtual environment
+   - PowerShell: `.venv\Scripts\activate.ps1`
+3) Install packages `pip install -r requirements.txt`
+4) Run main.py file
+
+## updateUser()
+
+Builds upon the previous functionality of changing the color of the gameboard by notifying the user which color the gameboard has been changed to.
+
+## get_reddit_post() and display_reddit_post()
+
+Uses the Reddit API to get and display the top post from the subreddit, r/checkers, for users of Checkers+ so they can keep up to date with checkers related news.
+
 # Welcome to Checkers+!
 Checkers+ is an exciting Python-based game that offers a modern twist on the classic game of checkers. Upon launching the game, users are presented with a prompt to choose between two game modes: Player vs. Player (PvP) or Player vs. AI. The game adheres to standard checkers rules with a few intriguing alterations. Checkers+ is a game for people of all ages and skill levels. This game is a continuation of code and game logic from this repository: https://github.com/techwithtim/Python-Checkers-AI. We hope you enjoy! 
 
