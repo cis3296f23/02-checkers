@@ -33,6 +33,7 @@ class Game:
         self.screen = pygame.display.set_mode((1000, 700))
         self.player1 = player1
         self.player2 = player2
+        self.reddit = ""
         
     def check_turn_timeout(self):
         """
@@ -83,25 +84,26 @@ class Game:
         text_surface2 = self.font.render(text2, True, self.text_color)
         self.screen.blit(text_surface, (715, 350))
         self.screen.blit(text_surface2, (715, 400))
-        
-    def display_reddit_post(self):
-        
+    
+    
+    def get_reddit_post(self):
         client = redditwarp.SYNC.Client()
         top = next(client.p.subreddit.pull.top('checkers', amount=1, time='hour'))
-       
+        self.reddit = top.title
+    
+    def display_reddit_post(self):
+        
         title = self.font.render("r/checkers: ",  True, self.text_color)
         self.screen.blit(title, (715,475))
        
-        post = top.title
-        
-        wrapped_post = wrap(post, 20)
+        wrapped_post = wrap(self.reddit, 20)
         num_lines = len(wrapped_post)
         
         for i in range(num_lines):
             text_surface = self.font.render(wrapped_post[i], True, self.text_color)
             self.screen.blit(text_surface, (715,500 + (i*25)))
 
-    def update(self, n): 
+    def update(self): 
         """
         The update function updates the board to show the current board and features.
         """
@@ -111,8 +113,7 @@ class Game:
         self.display_turn()
         self.display_piece_count()
         self.display_player_names(self.player1, self.player2)
-        if n == 0:
-            self.display_reddit_post()
+        self.display_reddit_post()
         
         pygame.display.update()
         
