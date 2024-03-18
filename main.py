@@ -9,7 +9,6 @@ from constants import BLUE, YELLOW, RED, GREEN
 from ScoreManager import ScoreManager
 from SecondMenu import SecondMenu
 
-
 pygame.init()
 pygame.mixer.init() # initialize pygame mixer for music
 
@@ -24,7 +23,6 @@ tracks = ["music/Track1.mp3", "music/Track2.mp3", "music/Track3.mp3", "music/Tra
 current_track = 0
 SONG_END = pygame.USEREVENT + 1
 second_menu = SecondMenu(tracks)
-
 
 def music_loop():
     """

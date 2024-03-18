@@ -250,7 +250,8 @@ class SecondMenu:
         pygame.draw.rect(screen, (128, 128, 128), exit_button_rect)
         screen.blit(exit_text, exit_button_rect)
         pygame.display.flip()
-
+        game.get_reddit_post()
+        
         while run:
             clock.tick(60)
             if game.turn == WHITE:
@@ -278,5 +279,4 @@ class SecondMenu:
                     
                 if event.type == background_music.SONG_END:
                         background_music.handle_event(event)
-
             game.update()
