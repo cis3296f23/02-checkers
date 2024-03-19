@@ -3,6 +3,8 @@ Game.py
 The game file holds the game logic and game class.
 """
 import pygame
+import praw
+
 from constants import RED, WHITE, YELLOW, SQUARE_SIZE
 from Main_Board import Main_Board
 
@@ -12,6 +14,18 @@ class Game:
     display the piece count, display the player names, update the board, check for a winner, select a piece, move a piece, show available moves, change the turn,
     get the board, and move an AI piece.
     """
+
+    reddit = praw.Reddit(
+        client_id="yZTQkbDVPMu8hHrec0vl_g",
+        client_secret="qP1f9w1p0d2sKnLPH1lPxPwbHp_skQ",
+        user_agent="app for tu software design"
+    )
+
+    subreddit = reddit.subreddit("Temple")
+
+    posts = subreddit.new(limit=10)
+    current_post = next(posts)
+
     def __init__(self, win, color, player1, player2):
         """
         The init function initializes the Game class with a window, color, player1, and player2, and sets the turn start time and turn timeout. The text color is set to white,
@@ -26,11 +40,39 @@ class Game:
         self.turn = RED
         self.valid_moves = {}
         self.font = pygame.font.Font(None, 36)  # Font for rendering text
+        self.small_font = pygame.font.Font(None, 24)
         self.text_color = WHITE  # Text color
         self.text_urgent_color = RED  # Text color when time is running out
         self.screen = pygame.display.set_mode((1000, 700))
         self.player1 = player1
         self.player2 = player2
+
+    def render_text(self, text: str, coordinate, maxSize, font) -> int:
+        """
+        Renders text to a max width in pixel and wraps the text at that point
+        """
+        words = text.split(' ')
+        lines = []
+        current_line = ''
+
+        for word in words:
+            test_line = current_line + ' ' + word if current_line else word
+            text_surface = self.font.render(test_line, True, self.text_color)
+            if text_surface.get_width() <= maxSize or '\n' in word:
+                current_line = test_line
+            else:
+                lines.append(current_line)
+                current_line = word
+
+        if current_line:
+            lines.append(current_line)
+
+        y = coordinate[1]
+        for line in lines:
+            text_surface = font.render(line, True, self.text_color)
+            self.screen.blit(text_surface, (coordinate[0], y))
+            y += text_surface.get_height()
+        return y
         
     def check_turn_timeout(self):
         """
@@ -47,6 +89,10 @@ class Game:
         # Render text
         self.screen.blit(text_surface, (715, 50))
         if elapsed_time > self.turn_timeout:
+            try:
+                self.current_post = next(self.posts)
+            except StopIteration:
+                self.current_post = self.subreddit.new(limit=10)
             self.change_turn()
 
     def display_turn(self):
@@ -84,11 +130,14 @@ class Game:
 
     def display_api(self): 
         """
-        The display player names function displays the player names on the screen.
+        Displays the reddit api on the screen
         """
-        text2 = f"look this is different"
-        text_surface2 = self.font.render(text2, True, self.text_color)
-        self.screen.blit(text_surface2, (715, 450))
+        title = self.current_post.title
+        description = self.current_post.selftext
+        print(self.current_post.url + '\n')
+
+        title_end = self.render_text(title, (715, 450), 300, self.font)
+        self.render_text(description, (715, title_end+25),300, self.small_font)
 
     def update(self): 
         """
