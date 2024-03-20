@@ -20,7 +20,7 @@ class Game:
         and the urgent text color is set to red. The screen is set to the window size, and the player names are set to player1 and player2.
         """
         self.turn_start_time = pygame.time.get_ticks()
-        self.turn_timeout = 5200  # 5.2 seconds per turn
+        self.turn_timeout = 10250  # 10.25 seconds per turn to prevent glitches on a move
         self.win = win
         self.color = color
         self.selected = None
@@ -43,7 +43,7 @@ class Game:
         elapsed_seconds = elapsed_time // 1000 
         text = f"Move Timer: {elapsed_seconds} s"
         text_surface = self.font.render(text, True, self.text_color)
-        if elapsed_time > 3000:
+        if elapsed_time > 5000: # turns to red after 5 seconds to let user know to make a move soon
             text_surface = self.font.render(text, True, self.text_urgent_color)
         else:
             text_surface = self.font.render(text, True, self.text_color)
