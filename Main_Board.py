@@ -65,19 +65,19 @@ class Main_Board:
         dC = endCol - startCol
         framesPerSquare = 4
         frameCount = max(abs(dR), abs(dC)) * framesPerSquare
-        print("frame count ", frameCount)
+        #print("frame count ", frameCount)
         for frame in range(frameCount + 1):
             #self.draw_squares(screen)
             fraction = frame / frameCount
-            print("fraction", fraction)
+            #print("fraction", fraction)
             currentRow = startRow + dR*fraction/frameCount
             currentCol = startCol + dC*fraction/frameCount
             x = int(currentCol * SQUARE_SIZE + SQUARE_SIZE / 2)
             y = int(currentRow * SQUARE_SIZE + SQUARE_SIZE / 2)
             screen.fill(BLACK)
             self.draw_squares(screen)
-            print("startRow ", x, " startCol ", y)
-            print("piece.color", piece.color)
+            # print("startRow ", x, " startCol ", y)
+            # print("piece.color", piece.color)
             if piece.color == RED:
                 color = RED
             else:

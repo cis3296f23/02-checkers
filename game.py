@@ -74,27 +74,7 @@ class Game:
             y += text_surface.get_height()
         return y
         
-    # def check_turn_timeout(self):
-    #     """
-    #     The check turn timeout function checks the turn timeout and displays the move timer on the screen. If the time is running out, the text color is set to red.
-    #     """
-    #     elapsed_time = pygame.time.get_ticks() - self.turn_start_time
-    #     elapsed_seconds = elapsed_time // 1000 
-    #     text = f"Move Timer: {elapsed_seconds} s"
-    #     text_surface = self.font.render(text, True, self.text_color)
-    #     if elapsed_time > 3000:
-    #         text_surface = self.font.render(text, True, self.text_urgent_color)
-    #     else:
-    #         text_surface = self.font.render(text, True, self.text_color)
-    #     # Render text
-    #     self.screen.blit(text_surface, (715, 50))
-    #     if elapsed_time > self.turn_timeout:
-    #         try:
-    #             self.current_post = next(self.posts)
-    #         except StopIteration:
-    #             self.current_post = self.subreddit.new(limit=10)
-    #         self.change_turn()
-
+   
     def display_turn(self):
         """
         The display turn function displays the current turn on the screen.
