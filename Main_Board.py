@@ -70,7 +70,6 @@ class Main_Board:
             #self.draw_squares(screen)
             fraction = frame / frameCount
             print("fraction", fraction)
-            # Calculate current position using linear interpolation
             currentRow = startRow + dR*fraction/frameCount
             currentCol = startCol + dC*fraction/frameCount
             x = int(currentCol * SQUARE_SIZE + SQUARE_SIZE / 2)
