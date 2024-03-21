@@ -43,7 +43,7 @@ def simulate_move(piece, move, board, game, skip):
     """
     The simulate move function simulates a move for the AI to make and returns the board.
     """
-    board.move(piece, move[0], move[1])
+    board.AIMove(piece, move[0], move[1])
     if skip:
         board.remove(skip)
 

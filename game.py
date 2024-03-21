@@ -23,7 +23,7 @@ class Game:
 
     subreddit = reddit.subreddit("Temple")
 
-    posts = subreddit.new(limit=10)
+    posts = subreddit.new(limit=5)
     current_post = next(posts)
 
     def __init__(self, win, color, player1, player2):
@@ -31,8 +31,8 @@ class Game:
         The init function initializes the Game class with a window, color, player1, and player2, and sets the turn start time and turn timeout. The text color is set to white,
         and the urgent text color is set to red. The screen is set to the window size, and the player names are set to player1 and player2.
         """
-        self.turn_start_time = pygame.time.get_ticks()
-        self.turn_timeout = 5200  # 5.2 seconds per turn
+        # self.turn_start_time = pygame.time.get_ticks()
+        # self.turn_timeout = 5200  # 5.2 seconds per turn
         self.win = win
         self.color = color
         self.selected = None
@@ -74,26 +74,26 @@ class Game:
             y += text_surface.get_height()
         return y
         
-    def check_turn_timeout(self):
-        """
-        The check turn timeout function checks the turn timeout and displays the move timer on the screen. If the time is running out, the text color is set to red.
-        """
-        elapsed_time = pygame.time.get_ticks() - self.turn_start_time
-        elapsed_seconds = elapsed_time // 1000 
-        text = f"Move Timer: {elapsed_seconds} s"
-        text_surface = self.font.render(text, True, self.text_color)
-        if elapsed_time > 3000:
-            text_surface = self.font.render(text, True, self.text_urgent_color)
-        else:
-            text_surface = self.font.render(text, True, self.text_color)
-        # Render text
-        self.screen.blit(text_surface, (715, 50))
-        if elapsed_time > self.turn_timeout:
-            try:
-                self.current_post = next(self.posts)
-            except StopIteration:
-                self.current_post = self.subreddit.new(limit=10)
-            self.change_turn()
+    # def check_turn_timeout(self):
+    #     """
+    #     The check turn timeout function checks the turn timeout and displays the move timer on the screen. If the time is running out, the text color is set to red.
+    #     """
+    #     elapsed_time = pygame.time.get_ticks() - self.turn_start_time
+    #     elapsed_seconds = elapsed_time // 1000 
+    #     text = f"Move Timer: {elapsed_seconds} s"
+    #     text_surface = self.font.render(text, True, self.text_color)
+    #     if elapsed_time > 3000:
+    #         text_surface = self.font.render(text, True, self.text_urgent_color)
+    #     else:
+    #         text_surface = self.font.render(text, True, self.text_color)
+    #     # Render text
+    #     self.screen.blit(text_surface, (715, 50))
+    #     if elapsed_time > self.turn_timeout:
+    #         try:
+    #             self.current_post = next(self.posts)
+    #         except StopIteration:
+    #             self.current_post = self.subreddit.new(limit=10)
+    #         self.change_turn()
 
     def display_turn(self):
         """
@@ -134,7 +134,7 @@ class Game:
         """
         title = self.current_post.title
         description = self.current_post.selftext
-        print(self.current_post.url + '\n')
+        #print(self.current_post.url + '\n')
 
         title_end = self.render_text(title, (715, 450), 300, self.font)
         self.render_text(description, (715, title_end+25),300, self.small_font)
@@ -145,7 +145,7 @@ class Game:
         """
         self.board.draw(self.win)
         self.show_available_moves(self.valid_moves)
-        self.check_turn_timeout()
+        #self.check_turn_timeout()
         self.display_turn()
         self.display_piece_count()
         self.display_player_names(self.player1, self.player2)
@@ -158,15 +158,15 @@ class Game:
         """
         return self.board.winner()
 
-    def select(self, row, col): 
+    def select(self, screen, row, col): 
         """
         The select function selects a piece and shows the available moves for the piece.
         """
         if self.selected:
-            result = self.move(row, col)
+            result = self.move(screen, row, col)
             if not result:
                 self.selected = None
-                self.select(row, col)
+                self.select(screen, row, col)
         
         try:
             piece = self.board.get_piece(row, col)
@@ -179,18 +179,19 @@ class Game:
             
         return False
 
-    def move(self, row, col):
+    def move(self, screen, row, col):
         """
         The move function moves a piece to a given row and column and changes the turn.
         """
+        #startRow, startCol = row, col
         piece = self.board.get_piece(row, col)
         if self.selected and piece == 0 and (row, col) in self.valid_moves:
-            self.board.move(self.selected, row, col)
+            self.board.move(self.selected, screen, row, col)
+            #self.board.animateMove(self.selected, startRow, startCol, row, col)
             skipped = self.valid_moves.get((row, col))
             if skipped:
                 self.board.remove(skipped)
             self.change_turn()
-            self.turn_start_time = pygame.time.get_ticks()  # Reset the turn timer
             return True
 
         return False
@@ -208,7 +209,6 @@ class Game:
         The change turn function changes the turn to the other player/color and resets the turn timer.
         """
         self.valid_moves = {}
-        self.turn_start_time = pygame.time.get_ticks()  # Reset the turn timer
         if self.turn == RED:
             self.turn = WHITE
         else:
@@ -226,3 +226,7 @@ class Game:
         """
         self.board = board
         self.change_turn()
+        
+
+        
+        
