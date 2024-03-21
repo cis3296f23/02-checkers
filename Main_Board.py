@@ -6,6 +6,9 @@ The Main_Board File holds the Main_Board class which is responsible for managing
 import pygame
 from constants import BLACK, ROWS, RED, SQUARE_SIZE, COLS, WHITE
 from pieces import Piece
+import time
+PADDING = 15
+OUTLINE = 3
 
 class Main_Board:
     """
@@ -49,18 +52,73 @@ class Main_Board:
                     pieces.append(piece)
         return pieces
 
-    def move(self, piece, row, col):
+    def move(self, piece, screen, row, col):
         """
         The move function moves a piece to a given row and column. If the selected row is at the end of the board, the piece becomes a king piece.
         """
+        radius = SQUARE_SIZE//2 - PADDING
+        startRow, startCol, endRow, endCol = piece.row, piece.col, row, col
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
+        #piece.move(row, col)
+        print(piece.color, startRow, startCol, endRow, endCol)
+        dR = endRow - startRow
+        dC = endCol - startCol
+        framesPerSquare = 4
+        frameCount = max(abs(dR), abs(dC)) * framesPerSquare
+        #print("frame count ", frameCount)
+        for frame in range(frameCount + 1):
+            #self.draw_squares(screen)
+            fraction = frame / frameCount
+            #print("fraction", fraction)
+            currentRow = startRow + dR*fraction/frameCount
+            currentCol = startCol + dC*fraction/frameCount
+            x = int(currentCol * SQUARE_SIZE + SQUARE_SIZE / 2)
+            y = int(currentRow * SQUARE_SIZE + SQUARE_SIZE / 2)
+            screen.fill(BLACK)
+            self.draw_squares(screen)
+            # print("startRow ", x, " startCol ", y)
+            # print("piece.color", piece.color)
+            if piece.color == RED:
+                color = RED
+            else:
+                color = WHITE
+            pygame.draw.circle(screen, color, (x, y), radius)
+            # endSquare = pygame.Rect(endCol*SQUARE_SIZE, endRow*SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
+            # pygame.draw.rect(screen, self.color, endSquare)
+            for r in range(ROWS):
+                for c in range(COLS):
+                    if self.board[r][c] != 0 and (r, c) != (startRow, startCol):
+                        temp_piece = self.board[r][c]
+                        temp_x = c * SQUARE_SIZE + SQUARE_SIZE // 2
+                        temp_y = r * SQUARE_SIZE + SQUARE_SIZE // 2
+                        pygame.draw.circle(screen, temp_piece.color, (temp_x, temp_y), radius)
+        
+            pygame.display.flip()
+            time.sleep(0.01)  # Slow down the animation; adjust as necess
+            
         piece.move(row, col)
+          
         if row == ROWS - 1 or row == 0:
             piece.make_king()
             if piece.color == WHITE:
                 self.white_kings += 1
             else:
                 self.red_kings += 1 
+                
+       
+    def AIMove(self, piece, row, col):
+        self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
+        piece.move(row, col)
+        
+        if row == ROWS - 1 or row == 0:
+            piece.make_king()
+            if piece.color == WHITE:
+                self.white_kings += 1
+            else:
+                self.red_kings += 1 
+                
+        
+
 
     def get_piece(self, row, col): 
         """
@@ -146,6 +204,12 @@ class Main_Board:
         """
         moves = {}
         last = []
+        start = int(start)
+        stop = int(stop)
+        step = int(step)
+        left = int(left)
+        
+        
         for r in range(start, stop, step):
             if left < 0:
                 break
@@ -180,6 +244,11 @@ class Main_Board:
         """
         moves = {}
         last = []
+        start = int(start)
+        stop = int(stop)
+        step = int(step)
+        right = int(right)
+        
         for r in range(start, stop, step):
             if right >= COLS:
                 break
