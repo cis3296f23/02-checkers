@@ -106,11 +106,44 @@ class SecondMenu:
         button_text_rect2 = button_text2.get_rect(
         center=(Width // 2, Height // 3 + button_height + spacing + button_height // 2))
 
-        # Create button on screen using position and size parameters
+        #dificulty select buttons
+        easyButton= button_font.render("Easy", True, (32, 252, 3))
+        easyButton_text_rect = easyButton.get_rect(
+            center= (Width // 2 * 1.35, Height // 3 + button_height + spacing + button_height // 2 * .8))
+        normalButton= button_font.render("Normal", True, (240, 205, 7))
+        normalButton_text_rect = normalButton.get_rect(
+            center= (Width // 2 * 1.50, Height // 3 + button_height + spacing + button_height // 2 * .8))
+        hardButton= button_font.render("Hard", True, (240, 42, 7))
+        hardButton_text_rect = hardButton.get_rect(
+
+            center= (Width // 2 * 1.65, Height // 3 + button_height + spacing + button_height // 2 * .8))
+
+        # I'm pretty sure you can't remove anything blitted to the screen, so the only way to get rid of it is to
+        # put something on top of it. This is a workaround to do that with the difficulty buttons
+
+        arrow_idiot_workaround = button_font.render("^", True, (98, 0, 168))
+
+        arrow = button_font.render("^", True, (133, 9, 222))
+
+        arrow_text_rect = hardButton.get_rect(center=(Width // 2 * 1.38, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+        start_game_screen.blit(arrow_idiot_workaround, arrow_text_rect)
+        arrow_text_rect = hardButton.get_rect(center=(Width // 2 * 1.54, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+        start_game_screen.blit(arrow_idiot_workaround, arrow_text_rect)
+        arrow_text_rect = hardButton.get_rect(center=(Width // 2 * 1.70, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+
+        start_game_screen.blit(arrow_idiot_workaround, arrow_text_rect)
+
+        # Create buttons on screen using position and size parameters
         pygame.draw.rect(start_game_screen, color, pygame.Rect(position, size))
         start_game_screen.blit(button_text2, button_text_rect2)
+
+        start_game_screen.blit(easyButton, easyButton_text_rect)
+        start_game_screen.blit(normalButton, normalButton_text_rect)
+        start_game_screen.blit(hardButton, hardButton_text_rect)
+
         button_rect_2 = pygame.Rect(position, size)
-        
+
+
         # Exit Second Menu Button
         position = (Width // 2-150, Height // 3 + 135)
         size = (300, 50)  # width, height
@@ -134,11 +167,17 @@ class SecondMenu:
                 
                 pygame.draw.rect(start_game_screen, cursor_color, button_rect_3) # Change color when cursor hovered over
                 start_game_screen.blit(button_text3, button_text_rect3)
+
                 pygame.display.update()
             elif button_rect_2.collidepoint(mouse):
                 
                 pygame.draw.rect(start_game_screen, cursor_color, button_rect_2)
                 start_game_screen.blit(button_text2, button_text_rect2)
+
+                start_game_screen.blit(easyButton, easyButton_text_rect)
+                start_game_screen.blit(normalButton, normalButton_text_rect)
+                start_game_screen.blit(hardButton, hardButton_text_rect)
+
                 pygame.display.update()
             
             elif button_rect.collidepoint(mouse):
@@ -153,12 +192,17 @@ class SecondMenu:
                 
                 pygame.draw.rect(start_game_screen, color, button_rect_2)
                 start_game_screen.blit(button_text2, button_text_rect2)
-                
+
+                start_game_screen.blit(easyButton, easyButton_text_rect)
+                start_game_screen.blit(normalButton, normalButton_text_rect)
+                start_game_screen.blit(hardButton, hardButton_text_rect)
+
+
                 pygame.draw.rect(start_game_screen, color, button_rect)
                 start_game_screen.blit(button_text1, button_text_rect1)
-                
+
                 pygame.display.update()
-                       
+
 
             for event in pygame.event.get():
                 score_manager.load_scores()
@@ -186,7 +230,54 @@ class SecondMenu:
                 # score_manager.save_scores() # now inside elif so scores are updated before returning to main
                     elif event.type == self.background_music.SONG_END:
                         self.background_music.handle_event(event)
-                  
+                    elif easyButton_text_rect.collidepoint(event.pos):
+                        player1_name.difficulty = 1
+                        arrow_text_rect = hardButton.get_rect(
+                            center=(
+                            Width // 2 * 1.38, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+                        screen.blit(arrow, arrow_text_rect)
+
+                        arrow_text_rect = hardButton.get_rect(center=(
+                        Width // 2 * 1.54, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+                        start_game_screen.blit(arrow_idiot_workaround, arrow_text_rect)
+                        arrow_text_rect = hardButton.get_rect(center=(
+                        Width // 2 * 1.70, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+                        start_game_screen.blit(arrow_idiot_workaround, arrow_text_rect)
+
+                        pygame.display.update()
+
+                    elif normalButton_text_rect.collidepoint(event.pos):
+                        player1_name.difficulty = 2
+                        arrow_text_rect = hardButton.get_rect(
+                            center=(
+                                Width // 2 * 1.54, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+                        screen.blit(arrow, arrow_text_rect)
+
+                        arrow_text_rect = hardButton.get_rect(center=(
+                        Width // 2 * 1.38, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+                        start_game_screen.blit(arrow_idiot_workaround, arrow_text_rect)
+                        arrow_text_rect = hardButton.get_rect(center=(
+                        Width // 2 * 1.70, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+                        start_game_screen.blit(arrow_idiot_workaround, arrow_text_rect)
+
+                        pygame.display.update()
+
+                    elif hardButton_text_rect.collidepoint(event.pos):
+                        player1_name.difficulty = 3
+                        arrow_text_rect = hardButton.get_rect(
+                            center=(
+                                Width // 2 * 1.7, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+                        screen.blit(arrow, arrow_text_rect)
+                        arrow_text_rect = hardButton.get_rect(center=(
+                        Width // 2 * 1.38, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+                        start_game_screen.blit(arrow_idiot_workaround, arrow_text_rect)
+                        arrow_text_rect = hardButton.get_rect(center=(
+                        Width // 2 * 1.54, Height // 3 + button_height + spacing + button_height // 2 * 1.5))
+                        start_game_screen.blit(arrow_idiot_workaround, arrow_text_rect)
+
+
+                        pygame.display.update()
+
     def start_game_vs_player(self, screen):
         """
         The start game vs player function starts the game against another player by creating an object of the game class and passing the screen, color, and player names.

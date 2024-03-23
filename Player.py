@@ -23,6 +23,7 @@ class Player:
         self.username = username
         self.score = 0
         self.win = 0
+        self.difficulty = 2
         
     
     def draw_text_input(self, player_name, error_msg="name error"):
