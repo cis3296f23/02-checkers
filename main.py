@@ -492,6 +492,8 @@ def show_leaderboard():
 
     # Sort players based on their scores in descending order
     sorted_players = sorted(score_manager.user_scores.items(), key=lambda x: x[1], reverse=True)
+    for a in sorted_players:
+        print(a)
 
     # Extract the top ten players or all players if less than ten
     top_ten_players = sorted_players[:10]

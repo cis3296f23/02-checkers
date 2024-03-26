@@ -7,9 +7,10 @@ Code from reference repo: https://github.com/techwithtim/Python-Checkers-AI
 
 from copy import deepcopy
 import pygame
+from random import randint,choice
 from constants import RED, WHITE
 
-def minimax(position, depth, max_player, game): 
+def minimax(position, depth, max_player, game, difficulty):
     """
     The minimax function is the minimax algorithm for AI to play checkers, and has parameters position, depth, max_player, and game parameters.
     The function returns the best move for the computer to make.
@@ -22,21 +23,29 @@ def minimax(position, depth, max_player, game):
         maxEval = float('-inf')
         best_move = None
         for move in get_all_moves(position, WHITE, game):
-            evaluation = minimax(move, depth-1, False, game)[0]
+            evaluation = minimax(move, depth-1, False, game,difficulty)[0]
             maxEval = max(maxEval, evaluation)
             if maxEval == evaluation:
                 best_move = move
-        
-        return maxEval, best_move
+        #returns best move on hardest, choses random move on lowest, on normal returns random move half the time
+        if difficulty == 3:
+            return maxEval, best_move
+        elif difficulty == 2:
+            if randint(0, 1) == 1:
+               return maxEval,choice(get_all_moves(position, WHITE, game))
+            else:
+                return maxEval,best_move
+        return maxEval, choice(get_all_moves(position, WHITE, game))
+
     else:
         minEval = float('inf')
         best_move = None
         for move in get_all_moves(position, RED, game):
-            evaluation = minimax(move, depth-1, True, game)[0]
+            evaluation = minimax(move, depth-1, True, game,difficulty)[0]
             minEval = min(minEval, evaluation)
             if minEval == evaluation:
                 best_move = move
-        
+
         return minEval, best_move
 
 def simulate_move(piece, move, board, game, skip):

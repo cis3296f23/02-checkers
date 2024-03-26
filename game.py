@@ -34,7 +34,7 @@ class Game:
         self.screen = pygame.display.set_mode((1000, 700))
         self.player1 = player1
         self.player2 = player2
-        
+
     def check_turn_timeout(self):
         """
         The check turn timeout function checks the turn timeout and displays the move timer on the screen. If the time is running out, the text color is set to red.

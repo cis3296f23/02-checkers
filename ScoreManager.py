@@ -60,7 +60,7 @@ class ScoreManager:
                     self.user_scores[player.username] -= 50
             
             player.score = self.user_scores[player.username]
+
             self.save_scores()
-    
-    
+
 

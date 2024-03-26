@@ -345,8 +345,8 @@ class SecondMenu:
         while run:
             clock.tick(60)
             if game.turn == WHITE:
-                value, new_board = minimax(game.get_board(), 4, WHITE, game)
-                game.ai_move(new_board) 
+                value, new_board = minimax(game.get_board(), 4, WHITE, game,player1_name.difficulty)
+                game.ai_move(new_board)
 
             if game.winner() != None:
                 print(game.winner())
