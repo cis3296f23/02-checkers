@@ -9,7 +9,7 @@ from copy import deepcopy
 import pygame
 from constants import RED, WHITE
 
-def minimax(position, depth, max_player, game): 
+def minimax(position, depth, max_player, game, user_color, user_two_color):
     """
     The minimax function is the minimax algorithm for AI to play checkers, and has parameters position, depth, max_player, and game parameters.
     The function returns the best move for the computer to make.
@@ -21,8 +21,8 @@ def minimax(position, depth, max_player, game):
     if max_player:
         maxEval = float('-inf')
         best_move = None
-        for move in get_all_moves(position, WHITE, game):
-            evaluation = minimax(move, depth-1, False, game)[0]
+        for move in get_all_moves(position, user_two_color, game):
+            evaluation = minimax(move, depth-1, False, game, user_color, user_two_color)[0]
             maxEval = max(maxEval, evaluation)
             if maxEval == evaluation:
                 best_move = move
@@ -31,8 +31,8 @@ def minimax(position, depth, max_player, game):
     else:
         minEval = float('inf')
         best_move = None
-        for move in get_all_moves(position, RED, game):
-            evaluation = minimax(move, depth-1, True, game)[0]
+        for move in get_all_moves(position, user_color, game):
+            evaluation = minimax(move, depth-1, True, game, user_color, user_two_color)[0]
             minEval = min(minEval, evaluation)
             if minEval == evaluation:
                 best_move = move

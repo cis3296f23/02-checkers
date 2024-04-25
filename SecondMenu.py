@@ -46,6 +46,8 @@ class SecondMenu:
         self.background_music = BackgroundMusic([track])
     
     color = RED
+    user_color = RED
+    user_two_color = WHITE
     def start_game_menu(self):
         """
         The start game menu function displays the second menu of the game, which allows the user to choose between playing against another player or against the computer.
@@ -193,7 +195,7 @@ class SecondMenu:
         """
         run = True
         clock = pygame.time.Clock()
-        game = Game(screen, self.color, player1_name.username, player2_name.username)
+        game = Game(screen, self.color, self.user_color, self.user_two_color, player1_name.username, player2_name.username)
         global score_manager, user_scores
 
         # Exit Button
@@ -209,12 +211,12 @@ class SecondMenu:
             if game.winner() != None:
                 print(game.winner())
                 run = False
-                if game.winner() == RED:
+                if game.winner() == self.user_color:
                     player1_name.update_win()
                     score_manager.update_scores(player1_name)
                     player2_name.update_loss()
                     score_manager.update_scores(player2_name)
-                elif game.winner() == WHITE:
+                elif game.winner() == self.user_two_color:
                     player2_name.update_win()
                     score_manager.update_scores(player2_name)
                     player1_name.update_loss()
@@ -240,7 +242,7 @@ class SecondMenu:
         """
         run = True
         clock = pygame.time.Clock()
-        game = Game(screen, self.color, player1_name.username, "Computer")
+        game = Game(screen, self.color, self.user_color, self.user_two_color, player1_name.username, "Computer")
         global score_manager, user_scores
 
         # Exit Button
@@ -253,8 +255,8 @@ class SecondMenu:
 
         while run:
             clock.tick(60)
-            if game.turn == WHITE:
-                value, new_board = minimax(game.get_board(), 4, WHITE, game)
+            if game.turn == self.user_two_color:
+                value, new_board = minimax(game.get_board(), 4, self.user_two_color, game, self.user_color, self.user_two_color)
                 game.ai_move(new_board) 
 
             if game.winner() != None:
