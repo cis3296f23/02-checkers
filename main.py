@@ -8,10 +8,33 @@ from SecondMenu import SecondMenu
 from constants import BLUE, YELLOW, RED, GREEN
 from ScoreManager import ScoreManager
 from SecondMenu import SecondMenu
+import requests
 
+
+title = ""
+link = ""
+subreddit_name = 'Temple'
+url = f"https://www.reddit.com/r/{subreddit_name}/hot.json?limit=1"
+headers = {
+            'User-Agent': 'MyBot/0.0.1'
+        }
+
+response = requests.get(url, headers=headers)
+
+
+if response.status_code == 200:
+    json_response = response.json()
+    posts = json_response["data"]["children"]
+    if posts:
+        latest_post = posts[0]["data"]
+        title = latest_post["title"]
+        link = f"https://www.reddit.com{latest_post['permalink']}"
+    
 
 pygame.init()
 pygame.mixer.init() # initialize pygame mixer for music
+
+
 
 # set up the drawing window
 Width, Height = 1000, 700 # updated size
@@ -44,15 +67,22 @@ game_title = "Checkers+"
 message = "Checkers with a twist! For all ages and skill levels!"
 credits1 = "Developed by Wander Cerda-Torres, Barry Lin,"
 credits2 = "Nathan McCourt, Jonathan Stanczak, and Geonhee Yu"
-background_image = pygame.image.load("checkers.jpg")
-background_image = pygame.transform.scale(background_image, (Width, Height))  
 title_font = pygame.font.Font(None, 64)
 message_font = pygame.font.Font(None, 32)
 credits_font = pygame.font.Font(None, 25)
+reddit_font = pygame.font.Font(None, 32)
 
 # Title text
 title_text = title_font.render(game_title, True, (255, 255, 255))
 title_rect = title_text.get_rect(center=(Width // 2, 22))
+
+#reddit text
+redditTitle_text = reddit_font.render(f'Title: {title}', True, (255, 255, 255))
+redditTitle_rect = redditTitle_text.get_rect(center=(Width // 2, 99))
+
+redditLink_text = reddit_font.render(f'Link: {link}', True, (255, 255, 255))
+redditLink_rect = redditLink_text.get_rect(center=(Width // 2, 120))
+
 # Under title text
 message_text = message_font.render(message, True, (255, 255, 255))
 message_rect = message_text.get_rect(center=(Width // 2, 55))
@@ -89,13 +119,14 @@ def main():
             elif event.type == SONG_END:
                 music_loop()
 
-        #image of the background
-        screen.blit(background_image, (0, 0))
         # display title information and credits
         screen.blit(title_text, title_rect)
         screen.blit(message_text, message_rect)
         screen.blit(credits_text1, credits_rect1)
         screen.blit(credits_text2, credits_rect2)
+        screen.blit(redditTitle_text, redditTitle_rect)
+        screen.blit(redditLink_text, redditLink_rect)
+
         
         menu_buttons()
         pygame.display.flip()
@@ -386,6 +417,8 @@ def settings():
     button_height = 50
     spacing = 10
     settings_screen = pygame.display.set_mode([Width, Height])
+    background_image = pygame.image.load("checkers.jpg")
+    background_image = pygame.transform.scale(background_image, (Width, Height))  
     screen.blit(background_image, (0, 0))
     settings_screen.blit(title_text, title_rect)
     settings_screen.blit(message_text, message_rect)
@@ -459,6 +492,8 @@ def show_leaderboard():
 
     # Sort players based on their scores in descending order
     sorted_players = sorted(score_manager.user_scores.items(), key=lambda x: x[1], reverse=True)
+    for a in sorted_players:
+        print(a)
 
     # Extract the top ten players or all players if less than ten
     top_ten_players = sorted_players[:10]
@@ -494,6 +529,7 @@ def show_leaderboard():
                     return  # exit tutorial and return to menu
             elif event.type == SONG_END:
                 music_loop()
+
 
 def board_customization(): 
     """
@@ -558,5 +594,6 @@ def board_customization():
                     second_menu_instance.color = GREEN
             elif event.type == SONG_END:
                 music_loop()
+
 
 main()

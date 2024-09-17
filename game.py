@@ -5,6 +5,9 @@ The game file holds the game logic and game class.
 import pygame
 from constants import RED, WHITE, YELLOW, SQUARE_SIZE
 from Main_Board import Main_Board
+import sys
+
+
 
 class Game: 
     """
@@ -31,7 +34,7 @@ class Game:
         self.screen = pygame.display.set_mode((1000, 700))
         self.player1 = player1
         self.player2 = player2
-        
+
     def check_turn_timeout(self):
         """
         The check turn timeout function checks the turn timeout and displays the move timer on the screen. If the time is running out, the text color is set to red.
@@ -82,6 +85,25 @@ class Game:
         self.screen.blit(text_surface, (715, 350))
         self.screen.blit(text_surface2, (715, 400))
 
+    def displayExit(self):
+        
+        self.exit_button_rect=pygame.Rect(715, 450, 140, 50)
+        pygame.draw.rect(self.screen, RED, self.exit_button_rect)
+
+        text_display = self.font.render("exit app", True, self.text_color)
+        self.screen.blit(text_display, (715, 450))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if self.exit_button_rect.collidepoint(event.pos):  # Assuming 'game' is your Game instance
+                    pygame.quit()
+                    sys.exit()
+
+        
+
     def update(self): 
         """
         The update function updates the board to show the current board and features.
@@ -92,6 +114,7 @@ class Game:
         self.display_turn()
         self.display_piece_count()
         self.display_player_names(self.player1, self.player2)
+        self.displayExit()
         pygame.display.update()
         
     def winner(self): 
