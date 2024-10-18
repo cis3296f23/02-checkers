@@ -7,7 +7,7 @@ import pygame
 from Player import Player
 from Player import user_scores
 from ScoreManager import ScoreManager
-from constants import RED, SQUARE_SIZE, WHITE
+from constants import RED, SQUARE_SIZE, WHITE, CHERRY
 from game import Game
 from computer import minimax
 from MusicClass import BackgroundMusic
@@ -45,7 +45,7 @@ class SecondMenu:
         self.selected_music_track = track
         self.background_music = BackgroundMusic([track])
     
-    color = RED
+    color = CHERRY
     def start_game_menu(self):
         """
         The start game menu function displays the second menu of the game, which allows the user to choose between playing against another player or against the computer.
@@ -209,7 +209,7 @@ class SecondMenu:
             if game.winner() != None:
                 print(game.winner())
                 run = False
-                if game.winner() == RED:
+                if game.winner() == CHERRY:
                     player1_name.update_win()
                     score_manager.update_scores(player1_name)
                     player2_name.update_loss()
@@ -260,7 +260,7 @@ class SecondMenu:
             if game.winner() != None:
                 print(game.winner())
                 run = False
-                if game.winner() == RED:
+                if game.winner() == CHERRY:
                     player1_name.update_win()
                     score_manager.update_scores(player1_name)
                 else:

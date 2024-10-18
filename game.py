@@ -3,7 +3,7 @@ Game.py
 The game file holds the game logic and game class.
 """
 import pygame
-from constants import RED, WHITE, YELLOW, SQUARE_SIZE
+from constants import RED, WHITE, YELLOW, SQUARE_SIZE, CHERRY
 from Main_Board import Main_Board
 
 class Game: 
@@ -23,7 +23,7 @@ class Game:
         self.color = color
         self.selected = None
         self.board = Main_Board(self.color)
-        self.turn = RED
+        self.turn = CHERRY
         self.valid_moves = {}
         self.font = pygame.font.Font(None, 36)  # Font for rendering text
         self.text_color = WHITE  # Text color
@@ -53,7 +53,7 @@ class Game:
         """
         The display turn function displays the current turn on the screen.
         """
-        if self.turn == RED:
+        if self.turn == CHERRY:
             text = f"Current Turn: RED"
         else:
             text = f"Current Turn: WHITE"
@@ -151,10 +151,10 @@ class Game:
         """
         self.valid_moves = {}
         self.turn_start_time = pygame.time.get_ticks()  # Reset the turn timer
-        if self.turn == RED:
+        if self.turn == CHERRY:
             self.turn = WHITE
         else:
-            self.turn = RED
+            self.turn = CHERRY
 
     def get_board(self): 
         """
