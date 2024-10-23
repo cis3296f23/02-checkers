@@ -3,6 +3,7 @@ Game.py
 The game file holds the game logic and game class.
 """
 import pygame
+import tweepy
 from constants import RED, WHITE, YELLOW, SQUARE_SIZE, CHERRY
 from Main_Board import Main_Board
 
@@ -82,6 +83,26 @@ class Game:
         self.screen.blit(text_surface, (715, 350))
         self.screen.blit(text_surface2, (715, 400))
 
+    def draw_twitter_button(self):
+        """
+        Draws a button on the game screen to fetch tweets.
+        """
+        button_rect = pygame.Rect(730, 250, 200, 50)  # Button dimensions
+        pygame.draw.rect(self.screen, (0, 128, 255), button_rect)  # Button color
+        text_surface = self.font.render("Get Tweet", True, self.text_color)
+        self.screen.blit(text_surface, (760, 265))  # Positioning the text in the button
+        return button_rect
+
+    def display_tweet(self, tweet):
+        """
+        Displays the tweet text in the center of the board for a duration.
+        """
+        text_surface = self.font.render(tweet, True, self.text_color)
+        text_rect = text_surface.get_rect(center=(500, 350))  # Centering the tweet text
+        self.screen.blit(text_surface, text_rect)
+        pygame.display.update()
+        pygame.time.delay(10000)  # Display for 10 seconds
+
     def update(self): 
         """
         The update function updates the board to show the current board and features.
@@ -92,6 +113,7 @@ class Game:
         self.display_turn()
         self.display_piece_count()
         self.display_player_names(self.player1, self.player2)
+        button_rect = self.draw_twitter_button()
         pygame.display.update()
         
     def winner(self): 
