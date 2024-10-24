@@ -40,10 +40,20 @@ class Game:
         self.post_duration = 10 * 1000  # 10 seconds in milliseconds
 
     def fetch_reddit_post(self):
-        client = redditwarp.SYNC.Client()
+        client = redditwarp.SYNC.Reddit()  # Initialize the Reddit client
         m = next(client.p.subreddit.pull.top('Temple', amount=1, time='hour'))
-        print(m.title)
-        print(m.permalink)
+        self.post = m.title  # Store the post title
+        self.post_time = pygame.time.get_ticks()  # Store the current time
+
+    def draw_reddit_button(self):
+        """
+        Draws a button on the game screen to fetch the top reddit post.
+        """
+        button_rect = pygame.Rect(730, 250, 200, 50)  # Button dimensions
+        pygame.draw.rect(self.screen, (255, 128, 0), button_rect)  # Button color
+        text_surface = self.font.render("Get Post", True, self.text_color)
+        self.screen.blit(text_surface, (775, 265))  # Positioning the text in the button
+        return button_rect
 
     def display_text_box(self):
         """
@@ -90,16 +100,6 @@ class Game:
             lines.append(current_line)
 
         return lines
-
-    def draw_reddit_button(self):
-        """
-        Draws a button on the game screen to fetch tweets.
-        """
-        button_rect = pygame.Rect(730, 250, 200, 50)  # Button dimensions
-        pygame.draw.rect(self.screen, (255, 128, 0), button_rect)  # Button color
-        text_surface = self.font.render("Get Post", True, self.text_color)
-        self.screen.blit(text_surface, (760, 265))  # Positioning the text in the button
-        return button_rect
 
     def check_turn_timeout(self):
         """
@@ -174,6 +174,7 @@ class Game:
         self.display_piece_count()
         self.display_player_names(self.player1, self.player2)
         self.display_button()
+        self.draw_reddit_button()
         self.display_text_box()
         pygame.display.update()
         

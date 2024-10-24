@@ -208,13 +208,9 @@ class SecondMenu:
         game = Game(screen, self.color, player1_name.username, player2_name.username)
         global score_manager, user_scores
 
-        # Exit Button
-        button_font = pygame.font.Font(None, 32)
-        exit_text = button_font.render("Exit Game", True, (255, 255, 255))
-        exit_button_rect = exit_text.get_rect(center=(Width // 2+350, Height - 100))
-        pygame.draw.rect(screen, (128, 128, 128), exit_button_rect)
-        screen.blit(exit_text, exit_button_rect)
-        pygame.display.flip()
+        post_duration = 10000  # Display time in milliseconds
+        post_text = None
+        post_display_time = 0  # Initialize the time when the tweet is displayed
 
         while run:
             clock.tick(60)
@@ -238,13 +234,29 @@ class SecondMenu:
             
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
-                    row, col = get_row_col_from_mouse(pos)
-                    game.select(row, col)
+                    reddit_button = game.display_button()  # Draw button
+                    if reddit_button.collidepoint(pos):  # If Reddit button clicked
+                        print('Fetching Reddit post...')
+                        reddit_post = game.fetch_reddit_post()  # Fetch a random Reddit post
+                        if reddit_post:
+                            post_text = reddit_post.title  # Store the post title
+                            post_display_time = pygame.time.get_ticks() + post_duration  # Set the display time
+
+                    else:
+                        row, col = get_row_col_from_mouse(pos)
+                        game.select(row, col)
                     # Check for background music event
                 if event.type == background_music.SONG_END:
                         background_music.handle_event(event)
 
             game.update()
+            # Display the fetched Reddit post
+            if post_text and pygame.time.get_ticks() < post_display_time:
+                game.display_text_box()  # Call the function to display the post
+            else:
+                post_text = None  # Clear the tweet when time is up
+
+    pygame.display.flip()  # Update the display after drawing everything
 
     def start_game_vs_computer(self, screen):
         run = True
@@ -296,7 +308,7 @@ class SecondMenu:
 
             game.update()
 
-        # Display the fetched Reddit post
+            # Display the fetched Reddit post
             if post_text and pygame.time.get_ticks() < post_display_time:
                 game.display_text_box()  # Call the function to display the post
             else:
