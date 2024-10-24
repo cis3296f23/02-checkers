@@ -246,63 +246,24 @@ class SecondMenu:
 
             game.update()
 
-    def start_game_vs_computer(self, screen): 
-        """
-        The start game vs computer function starts the game against the computer by creating an object of the game class and passing the screen, color, and player name.
-        """
+    def start_game_vs_computer(self, screen):
         run = True
         clock = pygame.time.Clock()
-        twitter_button = self.draw_twitter_button()
         game = Game(screen, self.color, player1_name.username, "Computer")
         global score_manager, user_scores
 
-        '''
-        # Exit Button
-        button_font = pygame.font.Font(None, 32)
-        exit_text = button_font.render("Exit Game", True, (255, 255, 255))
-        exit_button_rect = exit_text.get_rect(center=(Width // 2+350, Height - 100))
-        pygame.draw.rect(screen, (128, 128, 128), exit_button_rect)
-        screen.blit(exit_text, exit_button_rect)
-        pygame.display.flip()
-        '''
-
-        # Twitter Button
-        '''
-        twitter_button_rect = pygame.Rect(730, 250, 200, 50)  # Button dimensions
-        pygame.draw.rect(screen, (0, 128, 255), twitter_button_rect)
-        tweet_font = pygame.font.Font(None, 32)  # Button color
-        text_surface = tweet_font.render("Get Tweet", True, (255,255,255))
-        screen.blit(text_surface, (760, 265))  # Positioning the text in the button
-        pygame.display.flip()
-        '''
-        color = (128, 128, 128) # grey
-        cursor_color = (100, 100, 100) # darker grey
-        position = (Width // 2-150, Height // 3 + 135)
-        size = (300, 50)  # width, height
-
-        button_font = pygame.font.Font(None, 32)
-        button_text = button_font.render("Tutorial", True, (255, 255, 255)) # Button text and color
-        button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3+160))
-        pygame.draw.rect(screen, color, pygame.Rect(position, size))
-        screen.blit(button_text, button_text_rect)
-
-        pygame.draw.rect(screen, color, pygame.Rect(position, size))
-        screen.blit(button_text, button_text_rect)
-
-        # Used to indicate if cursor is hovering over button. If so, button will be darker
-        mouse = pygame.mouse.get_pos()
-        twitter_button = pygame.Rect(position, size)
-
-        tweet_duration = 10000 #Display time in milliseconds
-        tweet_text = None
+        post_duration = 10000  # Display time in milliseconds
+        post_text = None
+        post_display_time = 0  # Initialize the time when the tweet is displayed
 
         while run:
             clock.tick(60)
+
             if game.turn == WHITE:
                 value, new_board = minimax(game.get_board(), 4, WHITE, game)
-                game.ai_move(new_board) 
+                game.ai_move(new_board)
 
-            if game.winner() != None:
+            if game.winner() is not None:
                 print(game.winner())
                 run = False
                 if game.winner() == CHERRY:
@@ -315,29 +276,30 @@ class SecondMenu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-            
+
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
-                    twitter_button = game.display_button()
-                    if twitter_button.collidepoint(pos):  # If Twitter button clicked, display a tweet
-                        print('10')
+                    reddit_button = game.display_button()  # Draw button
+                    if reddit_button.collidepoint(pos):  # If Reddit button clicked
+                        print('Fetching Reddit post...')
+                        reddit_post = game.fetch_reddit_post()  # Fetch a random Reddit post
+                        if reddit_post:
+                            post_text = reddit_post.title  # Store the post title
+                            post_display_time = pygame.time.get_ticks() + post_duration  # Set the display time
 
                     else:
-                        #pos = pygame.mouse.get_pos()
                         row, col = get_row_col_from_mouse(pos)
                         game.select(row, col)
-                    
+
                 if event.type == background_music.SONG_END:
-                        background_music.handle_event(event)
+                    background_music.handle_event(event)
 
             game.update()
 
-            if tweet_text and pygame.time.get_ticks() < tweet_display_time:
-                font = pygame.font.Font(None, 36)
-                tweet_surface = font.render(tweet_text, True, (255, 255, 255))
-                tweet_rect = tweet_surface.get_rect(center=(Width // 2, Height // 2))
-                screen.blit(tweet_surface, tweet_rect)
+        # Display the fetched Reddit post
+            if post_text and pygame.time.get_ticks() < post_display_time:
+                game.display_text_box()  # Call the function to display the post
             else:
-                tweet_text = None  # Clear the tweet when time is up
+                post_text = None  # Clear the tweet when time is up
 
-            pygame.display.flip()  # Update the display after drawing everything
+        pygame.display.flip()  # Update the display after drawing everything

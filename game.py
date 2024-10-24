@@ -3,9 +3,9 @@ Game.py
 The game file holds the game logic and game class.
 """
 import pygame
-import tweepy
 import requests
 import random
+import redditwarp.SYNC
 from constants import RED, WHITE, YELLOW, SQUARE_SIZE, CHERRY
 from Main_Board import Main_Board
 
@@ -35,39 +35,69 @@ class Game:
         self.screen = pygame.display.set_mode((1000, 700))
         self.player1 = player1
         self.player2 = player2
-        self.bearer_token = 'AAAAAAAAAAAAAAAAAAAAAERCwgEAAAAAsgviCbea5351l1HBUi3CozqJ3jc%3DYfBuhv6Y1QUWYEs56ImCymPeY3WLhRIEvTDx7XsZ6NTqyxj7OF'
-        self.username = 'TempleUniv'
+        self.post = None  # Initialize as None, or remove if not necessary
+        self.post_time = 0  # Time when the Reddit post was fetched
+        self.post_duration = 10 * 1000  # 10 seconds in milliseconds
 
-    '''
-    def create_headers(self):
+    def fetch_reddit_post(self):
+        client = redditwarp.SYNC.Client()
+        m = next(client.p.subreddit.pull.top('Temple', amount=1, time='hour'))
+        print(m.title)
+        print(m.permalink)
+
+    def display_text_box(self):
         """
-        Creates headers for authenticating with Twitter API
+            Displays a white box and the provided tweet text inside the box if available and within the display time.
         """
-        headers = {'Authorization' : f'Bearer {self.bearer_token}', 'User-Agent' : 'CL80439727'}
-        return headers
+        box_rect = pygame.Rect(690, 400, 300, 300)  # Box dimensions
+        pygame.draw.rect(self.screen, (255, 255, 255), box_rect)  # Draw white box
 
-    def connect_to_twitter(self, url, headers, params = None):
-        response = requests.get(url, headers=headers, params = params)
-        if response.status_code != 200:
-            raise Exception(f"Error: {response.status_code}, {response.text}")
-        return response.json
+        # Check if the tweet should be displayed
+        current_time = pygame.time.get_ticks()
+        if self.post and current_time - self.post_time < self.post_duration:
+            font = pygame.font.Font(None, 24)  # Smaller font for tweets
+            lines = self.wrap_text(self.post, font, box_rect.width)
 
-    def fetch_random_tweet(self):
-        url = f"https://api.twitter.com/2/tweets/search/recent?query=from:{self.username}&max_results=10"
-        headers = self.create_headers()
-        json_response = self.connect_to_twitter(url, headers)
-        tweets = json_response.get('data', [])
-        if not tweets:
-            return "No tweets available"
-        return random.choice(tweets)['text']
-    '''
-    def draw_twitter_button(self):
+            # Display each line in the white box
+            y_offset = 410  # Starting Y position
+            for line in lines:
+                post_surface = font.render(line, True, (0, 0, 0))  # Black text
+                self.screen.blit(post_surface, (700, y_offset))
+                y_offset += 30  # Line spacing
+        else:
+            self.post = ""  # Clear the tweet if time is up
+
+    def wrap_text(self, text, font, max_width):
+        """
+        A helper function to wrap text to fit inside the box width.
+        """
+        words = text.split(' ')
+        lines = []
+        current_line = ""
+
+        for word in words:
+            # Test if adding the next word will exceed the width
+            test_line = current_line + word + " "
+            if font.size(test_line)[0] <= max_width:
+                current_line = test_line
+            else:
+                # If the test line exceeds max width, add current line to lines and start a new one
+                lines.append(current_line)
+                current_line = word + " "
+
+        # Add any remaining words as the last line
+        if current_line:
+            lines.append(current_line)
+
+        return lines
+
+    def draw_reddit_button(self):
         """
         Draws a button on the game screen to fetch tweets.
         """
         button_rect = pygame.Rect(730, 250, 200, 50)  # Button dimensions
-        pygame.draw.rect(self.screen, (0, 128, 255), button_rect)  # Button color
-        text_surface = self.font.render("Get Tweet", True, self.text_color)
+        pygame.draw.rect(self.screen, (255, 128, 0), button_rect)  # Button color
+        text_surface = self.font.render("Get Post", True, self.text_color)
         self.screen.blit(text_surface, (760, 265))  # Positioning the text in the button
         return button_rect
 
@@ -122,10 +152,6 @@ class Game:
         self.screen.blit(text_surface, (770, 265)) # Positioning the text in the button
         return button_rect
 
-    def display_tweet_box(self):
-        button_rect = pygame.Rect(690, 400, 300, 300)  # Button dimensions
-        pygame.draw.rect(self.screen, (255, 255, 255), button_rect)  # Button color
-
     def display_player_names(self, player1, player2):
         """
         The display player names function displays the player names on the screen.
@@ -148,7 +174,7 @@ class Game:
         self.display_piece_count()
         self.display_player_names(self.player1, self.player2)
         self.display_button()
-        self.display_tweet_box()
+        self.display_text_box()
         pygame.display.update()
         
     def winner(self): 
