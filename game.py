@@ -4,6 +4,8 @@ The game file holds the game logic and game class.
 """
 import pygame
 import tweepy
+import requests
+import random
 from constants import RED, WHITE, YELLOW, SQUARE_SIZE, CHERRY
 from Main_Board import Main_Board
 
@@ -13,6 +15,7 @@ class Game:
     display the piece count, display the player names, update the board, check for a winner, select a piece, move a piece, show available moves, change the turn,
     get the board, and move an AI piece.
     """
+
     def __init__(self, win, color, player1, player2):
         """
         The init function initializes the Game class with a window, color, player1, and player2, and sets the turn start time and turn timeout. The text color is set to white,
@@ -32,7 +35,42 @@ class Game:
         self.screen = pygame.display.set_mode((1000, 700))
         self.player1 = player1
         self.player2 = player2
-        
+        self.bearer_token = 'AAAAAAAAAAAAAAAAAAAAAERCwgEAAAAAsgviCbea5351l1HBUi3CozqJ3jc%3DYfBuhv6Y1QUWYEs56ImCymPeY3WLhRIEvTDx7XsZ6NTqyxj7OF'
+        self.username = 'TempleUniv'
+
+    '''
+    def create_headers(self):
+        """
+        Creates headers for authenticating with Twitter API
+        """
+        headers = {'Authorization' : f'Bearer {self.bearer_token}', 'User-Agent' : 'CL80439727'}
+        return headers
+
+    def connect_to_twitter(self, url, headers, params = None):
+        response = requests.get(url, headers=headers, params = params)
+        if response.status_code != 200:
+            raise Exception(f"Error: {response.status_code}, {response.text}")
+        return response.json
+
+    def fetch_random_tweet(self):
+        url = f"https://api.twitter.com/2/tweets/search/recent?query=from:{self.username}&max_results=10"
+        headers = self.create_headers()
+        json_response = self.connect_to_twitter(url, headers)
+        tweets = json_response.get('data', [])
+        if not tweets:
+            return "No tweets available"
+        return random.choice(tweets)['text']
+    '''
+    def draw_twitter_button(self):
+        """
+        Draws a button on the game screen to fetch tweets.
+        """
+        button_rect = pygame.Rect(730, 250, 200, 50)  # Button dimensions
+        pygame.draw.rect(self.screen, (0, 128, 255), button_rect)  # Button color
+        text_surface = self.font.render("Get Tweet", True, self.text_color)
+        self.screen.blit(text_surface, (760, 265))  # Positioning the text in the button
+        return button_rect
+
     def check_turn_timeout(self):
         """
         The check turn timeout function checks the turn timeout and displays the move timer on the screen. If the time is running out, the text color is set to red.
@@ -72,7 +110,23 @@ class Game:
         self.screen.blit(text_surface, (715, 150))
         self.screen.blit(text_surface2, (715, 200))
 
-    def display_player_names(self, player1, player2): 
+    def display_button(self):
+        """
+        The display player names function displays the player names on the screen.
+        """
+        font = pygame.font.Font(None, 32)
+        text_color = (255,255,255)
+        button_rect = pygame.Rect(730, 250, 200, 50)  # Button dimensions
+        pygame.draw.rect(self.screen, (0, 128, 255), button_rect)  # Button color
+        text_surface = font.render("Get Tweet", True, text_color)
+        self.screen.blit(text_surface, (770, 265)) # Positioning the text in the button
+        return button_rect
+
+    def display_tweet_box(self):
+        button_rect = pygame.Rect(690, 400, 300, 300)  # Button dimensions
+        pygame.draw.rect(self.screen, (255, 255, 255), button_rect)  # Button color
+
+    def display_player_names(self, player1, player2):
         """
         The display player names function displays the player names on the screen.
         """
@@ -80,28 +134,8 @@ class Game:
         text2 = f"Player 2: {player2}"
         text_surface = self.font.render(text, True, self.text_color)
         text_surface2 = self.font.render(text2, True, self.text_color)
-        self.screen.blit(text_surface, (715, 350))
-        self.screen.blit(text_surface2, (715, 400))
-
-    def draw_twitter_button(self):
-        """
-        Draws a button on the game screen to fetch tweets.
-        """
-        button_rect = pygame.Rect(730, 250, 200, 50)  # Button dimensions
-        pygame.draw.rect(self.screen, (0, 128, 255), button_rect)  # Button color
-        text_surface = self.font.render("Get Tweet", True, self.text_color)
-        self.screen.blit(text_surface, (760, 265))  # Positioning the text in the button
-        return button_rect
-
-    def display_tweet(self, tweet):
-        """
-        Displays the tweet text in the center of the board for a duration.
-        """
-        text_surface = self.font.render(tweet, True, self.text_color)
-        text_rect = text_surface.get_rect(center=(500, 350))  # Centering the tweet text
-        self.screen.blit(text_surface, text_rect)
-        pygame.display.update()
-        pygame.time.delay(10000)  # Display for 10 seconds
+        self.screen.blit(text_surface, (715, 320))
+        self.screen.blit(text_surface2, (715, 370))
 
     def update(self): 
         """
@@ -113,7 +147,8 @@ class Game:
         self.display_turn()
         self.display_piece_count()
         self.display_player_names(self.player1, self.player2)
-        button_rect = self.draw_twitter_button()
+        self.display_button()
+        self.display_tweet_box()
         pygame.display.update()
         
     def winner(self): 
