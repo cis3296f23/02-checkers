@@ -13,7 +13,6 @@ class Game:
     display the piece count, display the player names, update the board, check for a winner, select a piece, move a piece, show available moves, change the turn,
     get the board, and move an AI piece.
     """
-
     def __init__(self, win, color, player1, player2):
         """
         The init function initializes the Game class with a window, color, player1, and player2, and sets the turn start time and turn timeout. The text color is set to white,
@@ -163,6 +162,15 @@ class Game:
         text_surface2 = self.font.render(text2, True, self.text_color)
         self.screen.blit(text_surface, (715, 320))
         self.screen.blit(text_surface2, (715, 370))
+    
+    def display_quit(self):
+        font = pygame.font.Font(None, 32)
+        text_color = (255,255,255)
+        button_rect = pygame.Rect(715, 0, 250, 50)  # Button dimensions
+        pygame.draw.rect(self.screen, (0, 128, 255), button_rect)  # Button color
+        text_surface = font.render("Press to Quit", True, text_color)
+        self.screen.blit(text_surface, (770, 15)) # Positioning the text in the button
+        return button_rect
 
     def update(self):
         """
@@ -177,6 +185,7 @@ class Game:
         self.display_button()
         self.draw_reddit_button()
         self.display_text_box()
+        self.display_quit()
         pygame.display.update()
 
     def winner(self):

@@ -231,6 +231,12 @@ class SecondMenu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+                #Feature to quit at any point of the game
+                if event.type ==pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos() #if button is clicked
+                    quit_button = game.display_quit()
+                    if quit_button.collidepoint(pos):
+                        run = False
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
@@ -288,6 +294,12 @@ class SecondMenu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+                #Feature to quit at any point of the game
+                if event.type ==pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos() # if button is clicked
+                    quit_button = game.display_quit()
+                    if quit_button.collidepoint(pos):
+                        run = False
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
