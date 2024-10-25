@@ -77,6 +77,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            #if playing hits q, then game ends
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 buttons = menu_buttons()
                 if buttons[0].collidepoint(event.pos): # If Start Game button is clicked, show the second menu
