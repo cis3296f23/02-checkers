@@ -13,6 +13,7 @@ class Game:
     display the piece count, display the player names, update the board, check for a winner, select a piece, move a piece, show available moves, change the turn,
     get the board, and move an AI piece.
     """
+    
     def __init__(self, win, color, player1, player2):
         """
         The init function initializes the Game class with a window, color, player1, and player2, and sets the turn start time and turn timeout. The text color is set to white,
