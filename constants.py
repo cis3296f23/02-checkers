@@ -7,6 +7,7 @@ import pygame
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+CHERRY = (183,33,70)
 RED = (255, 0, 0)
 GREY = (128,128,128)
 GREEN = (0,128,0)

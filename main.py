@@ -44,23 +44,25 @@ game_title = "Checkers+"
 message = "Checkers with a twist! For all ages and skill levels!"
 credits1 = "Developed by Wander Cerda-Torres, Barry Lin,"
 credits2 = "Nathan McCourt, Jonathan Stanczak, and Geonhee Yu"
-background_image = pygame.image.load("checkers.jpg")
-background_image = pygame.transform.scale(background_image, (Width, Height))  
-title_font = pygame.font.Font(None, 64)
-message_font = pygame.font.Font(None, 32)
-credits_font = pygame.font.Font(None, 25)
+#background_image = pygame.image.load("checkers.jpg")
+#background_image = pygame.transform.scale(background_image, (Width, Height))
+background_color = (184, 80, 66)
+pygame.font.init()
+title_font = pygame.font.Font("budmo.otf", 132)
+message_font = pygame.font.Font("GethoBold.ttf", 32)
+credits_font = pygame.font.Font("GethoBold.ttf", 25)
 
 # Title text
-title_text = title_font.render(game_title, True, (255, 255, 255))
-title_rect = title_text.get_rect(center=(Width // 2, 22))
+title_text = title_font.render(game_title, True, (231, 232, 209))
+title_rect = title_text.get_rect(center=(Width // 2, 75))
 # Under title text
-message_text = message_font.render(message, True, (255, 255, 255))
-message_rect = message_text.get_rect(center=(Width // 2, 55))
+message_text = message_font.render(message, True, (231, 232, 209))
+message_rect = message_text.get_rect(center=(Width // 2, 175))
 # Credits text
-credits_text1 = credits_font.render(credits1, True, (255, 255, 255))
-credits_rect1 = credits_text1.get_rect(center=(Width // 2, 650))
-credits_text2 = credits_font.render(credits2, True, (255, 255, 255))
-credits_rect2 = credits_text2.get_rect(center=(Width // 2, 670))
+credits_text1 = credits_font.render(credits1, True, (231, 232, 209))
+credits_rect1 = credits_text1.get_rect(center=(Width // 2, 625))
+credits_text2 = credits_font.render(credits2, True, (231, 232, 209))
+credits_rect2 = credits_text2.get_rect(center=(Width // 2, 675))
 
 second_menu_instance = SecondMenu(tracks)
 def main():
@@ -75,6 +77,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            #if playing hits q, then game ends
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 buttons = menu_buttons()
                 if buttons[0].collidepoint(event.pos): # If Start Game button is clicked, show the second menu
@@ -90,7 +96,8 @@ def main():
                 music_loop()
 
         #image of the background
-        screen.blit(background_image, (0, 0))
+        #screen.blit(background_image, (0, 0))
+        screen.fill(background_color)
         # display title information and credits
         screen.blit(title_text, title_rect)
         screen.blit(message_text, message_rect)
@@ -118,13 +125,13 @@ def menu_buttons():
     startgame_icon_resized = pygame.transform.scale(startgame_icon, icon_size)
     startgame_icon_rect = startgame_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + (button_height - icon_size[1] - 50) // 2))
 
-    color = (128, 128, 128) # grey
+    color = (167, 190, 174) # teal
     cursor_color = (100, 100, 100) # darker grey
     position = (Width // 2-150, Height // 3-25)
     size = (300, 50)  # width, height
         
     button_font = pygame.font.Font(None, 32)
-    button_text = button_font.render("Start Game", True, (255, 255, 255)) # Button text and color
+    button_text = button_font.render("Start Game", True, (231, 232, 209)) # Button text and color
     button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3))
     
     # Create button on screen using position and size parameters
@@ -149,7 +156,7 @@ def menu_buttons():
     position = (Width // 2 - 150, Height // 3 + button_height + spacing)
     size = (300, button_height)  # width, height
 
-    button_text = button_font.render("Settings", True, (255, 255, 255))  # Button text and color
+    button_text = button_font.render("Settings", True, (231, 232, 209))  # Button text and color
     button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + button_height + spacing + button_height // 2))
 
     # Draw the icon next to the text with the specified size
@@ -175,13 +182,13 @@ def menu_buttons():
     # Tutorial button
     tutorial_icon = pygame.image.load('pics/tutorial_icon.png')
 
-    color = (128, 128, 128) # grey
+    color = (167, 190, 174) # teal
     cursor_color = (100, 100, 100) # darker grey
     position = (Width // 2-150, Height // 3 + 135)
     size = (300, 50)  # width, height
 
     button_font = pygame.font.Font(None, 32)
-    button_text = button_font.render("Tutorial", True, (255, 255, 255)) # Button text and color
+    button_text = button_font.render("Tutorial", True, (231, 232, 209)) # Button text and color
     button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3+160))
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
@@ -207,21 +214,21 @@ def menu_buttons():
     # Leaderboard button
     leaderboard_icon = pygame.image.load('pics/leaderboard_icon.png')
 
-    color = (128, 128, 128) # grey
+    color = (167, 190, 174) # teal
     cursor_color = (100, 100, 100) # darker grey
-    position = (Width // 2 - 150, Height // 3 + 210)  # Adjust the vertical position as needed
+    position = (Width // 2 - 150, Height // 3 + 285)  # Adjust the vertical position as needed
     size = (300, 50)  # width, height
 
     button_font = pygame.font.Font(None, 32)
-    button_text = button_font.render("View Rankings", True, (255, 255, 255)) # Button text and color
-    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + 235))  # Adjust the vertical position as needed
+    button_text = button_font.render("View Rankings", True, (231, 232, 209)) # Button text and color
+    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + 310))  # Adjust the vertical position as needed
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
 
     # Draw the icon next to the text with the specified size
     leaderboard_icon_resized = pygame.transform.scale(leaderboard_icon, icon_size)
     leaderboard_icon_rect = leaderboard_icon_resized.get_rect(
-    topleft=(Width // 2 - 150 + 10, Height // 3 + 210 + (button_height - icon_size[1]) // 2))
+    topleft=(Width // 2 - 150 + 10, Height // 3 + 285 + (button_height - icon_size[1]) // 2))
 
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
@@ -242,20 +249,20 @@ def menu_buttons():
     # Customize Board button
     board_icon = pygame.image.load('pics/colorwheel_icon.png')
 
-    color = (128, 128, 128) # grey
+    color = (167, 190, 174) # teal
     cursor_color = (100, 100, 100) # darker grey
-    position = (Width // 2 - 150, Height // 3 + 285)  # Adjust the vertical position as needed
+    position = (Width // 2 - 150, Height // 3 + 210)  # Adjust the vertical position as needed
     size = (300, 50)  # width, height
 
     button_font = pygame.font.Font(None, 32)
-    button_text = button_font.render("Customize Board", True, (255, 255, 255)) # Button text and color
-    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + 310))  # Adjust the vertical position as needed
+    button_text = button_font.render("Customize Board", True, (231, 232, 209)) # Button text and color
+    button_text_rect = button_text.get_rect(center=(Width // 2, Height // 3 + 235))  # Adjust the vertical position as needed
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
 
     # Draw the icon next to the text with the specified size
     board_icon_resized = pygame.transform.scale(board_icon, icon_size)
-    board_icon_rect = board_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + 285 + (button_height - icon_size[1]) // 2))
+    board_icon_rect = board_icon_resized.get_rect(topleft=(Width // 2 - 150 + 10, Height // 3 + 210 + (button_height - icon_size[1]) // 2))
 
     pygame.draw.rect(screen, color, pygame.Rect(position, size))
     screen.blit(button_text, button_text_rect)
@@ -282,7 +289,7 @@ def tutorial():
     # load image used in tutorial
     checkers_icon = pygame.image.load('pics/checkersguy_icon.png')
     tutorial_screen = pygame.display.set_mode([Width, Height])
-    tutorial_screen.fill((128, 128, 128))
+    tutorial_screen.fill((184, 80, 66))
 
     # First message
     tutorial_font = pygame.font.Font(None, 64)
@@ -386,7 +393,8 @@ def settings():
     button_height = 50
     spacing = 10
     settings_screen = pygame.display.set_mode([Width, Height])
-    screen.blit(background_image, (0, 0))
+    #screen.blit(background_image, (0, 0))
+    screen.fill(background_color)
     settings_screen.blit(title_text, title_rect)
     settings_screen.blit(message_text, message_rect)
     settings_screen.blit(credits_text1, credits_rect1)
@@ -446,7 +454,7 @@ def show_leaderboard():
     exit button.
     """
     leaderboard_screen = pygame.display.set_mode((1000, 700))
-    screen.fill((128, 128, 128))
+    screen.fill((background_color))
     # Leaderboard header
     header_font = pygame.font.Font(None, 36)
     header_text = header_font.render("Leaderboard", True, (255, 255, 255))
@@ -501,10 +509,12 @@ def board_customization():
     It allows the user to exit the board customization after clicking the exit button.
     """
     board_customization_screen = pygame.display.set_mode([Width, Height])
-    background_image = pygame.image.load("checkers.jpg")
-    background_image = pygame.transform.scale(background_image, (Width, Height))
+    #background_image = pygame.image.load("checkers.jpg")
+    #background_image = pygame.transform.scale(background_image, (Width, Height))
+    background_color = (184, 80, 66)
     # image of the background
-    board_customization_screen.blit(background_image, (0, 0))
+    #board_customization_screen.blit(background_image, (0, 0))
+    screen.fill(background_color)
     board_customization_screen.blit(title_text, title_rect)
     board_customization_screen.blit(message_text, message_rect)
     board_customization_screen.blit(credits_text1, credits_rect1)

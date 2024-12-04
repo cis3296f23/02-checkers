@@ -4,8 +4,9 @@ The Main_Board File holds the Main_Board class which is responsible for managing
 """
 
 import pygame
-from constants import BLACK, ROWS, RED, SQUARE_SIZE, COLS, WHITE
+from constants import BLACK, ROWS, RED, SQUARE_SIZE, COLS, WHITE, CHERRY
 from pieces import Piece
+
 
 class Main_Board:
     """
@@ -82,7 +83,7 @@ class Main_Board:
                     if row < 3:
                         self.board[row].append(Piece(row, col, WHITE))
                     elif row > 4:
-                        self.board[row].append(Piece(row, col, RED))
+                        self.board[row].append(Piece(row, col, CHERRY))
                     else:
                         self.board[row].append(0)
                 else:
@@ -106,7 +107,7 @@ class Main_Board:
         for piece in pieces:
             self.board[piece.row][piece.col] = 0
             if piece != 0:
-                if piece.color == RED:
+                if piece.color == CHERRY:
                     self.red_left -= 1
                 else:
                     self.white_left -= 1
@@ -116,10 +117,10 @@ class Main_Board:
         The winner function checks if a winner has been found and returns the winner. If no winner has been found, None is returned.
         If a user has no pieces left or no moves left, the other user is the winner.
         """
-        if self.red_left <= 0 or self.no_moves(RED):
+        if self.red_left <= 0 or self.no_moves(CHERRY):
             return WHITE
         elif self.white_left <= 0 or self.no_moves(WHITE):
-            return RED
+            return CHERRY
         
         return None 
     
@@ -131,7 +132,7 @@ class Main_Board:
         left = piece.col - 1
         right = piece.col + 1
         row = piece.row
-        if piece.color == RED or piece.king:
+        if piece.color == CHERRY or piece.king:
             moves.update(self.move_left(row -1, max(row-3, -1), -1, piece.color, left))
             moves.update(self.move_right(row -1, max(row-3, -1), -1, piece.color, right))
         if piece.color == WHITE or piece.king:
